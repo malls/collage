@@ -11,7 +11,7 @@ var path = require('path');
 var AWS = require('aws-sdk');
 var dotenv = require('dotenv');
 var app = express();
-var port = process.env.PORT || 5000;
+var port = process.env.PORT || 3000;
 var io = require('socket.io').listen(app.listen(port));
 
 dotenv.load();
