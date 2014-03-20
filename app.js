@@ -40,6 +40,10 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 // app.get('/file-upload', UPLAOD LOGIC HERE);
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+
+
+io.sockets.on('connection', function (socket) {
+    socket.on('send', function (data) {
+        socket.broadcast.emit('move', data);
+    });
 });
