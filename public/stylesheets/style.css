@@ -1,0 +1,19 @@
+html {
+	height: 100%;
+}
+
+body {
+  padding: 0px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  width: 100%;
+  height: 100%;
+}
+
+a {
+  color: #00B7FF;
+}
+
+form {
+	height: 100%;
+	width: 100%;
+}
