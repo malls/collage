@@ -10,10 +10,11 @@ var http = require('http');
 var path = require('path');
 var AWS = require('aws-sdk');
 var dotenv = require('dotenv');
-dotenv.load();
-
-
 var app = express();
+var port = process.env.PORT || 5000;
+var io = require('socket.io').listen(app.listen(port));
+
+dotenv.load();
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -26,6 +27,9 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+
 
 // development only
 if ('development' == app.get('env')) {
