@@ -7,7 +7,9 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   width: 100%;
   height: 100%;
-  background: url("http://www.trendastic.com/wp-content/uploads/2013/05/Windows-Xp-Bliss-Wallpaper.png");
+  background: url("http://newevolutiondesigns.com/images/freebies/flowers-wallpaper-7.jpg");
+  background-position: bottom center;
+  /*background: url("http://www.trendastic.com/wp-content/uploads/2013/05/Windows-Xp-Bliss-Wallpaper.png");*/
 }
 
 a {
@@ -20,6 +22,6 @@ form {
 }
 
 img{
-	max-height: 269px;
+	max-height: 240px;
 	max-width: auto;
 }
