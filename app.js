@@ -37,13 +37,27 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/users', user.list);
+// app.get('/users', user.list);
+// app.get('/:room', routes.room); //use this tho
 // app.get('/file-upload', UPLAOD LOGIC HERE);
 
+var rooms = {};
 
+function sendData(sender, sockets, data) {
+	for (var i in sockets) {
+		if (sockets[i] !== sender)
+			sockets[i].emit('move', data);
+	}
+};
 
 io.sockets.on('connection', function (socket) {
+	var route = socket.route; // get url route
+	if (typeof rooms[route] === 'undefined') {
+		rooms[route] = [];
+	}
+	rooms[route].push(socket);
+	socket.room = route;
     socket.on('send', function (data) {
-        socket.broadcast.emit('move', data);
+    	sendData(socket, rooms[socket.room], data);
     });
 });
