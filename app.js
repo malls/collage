@@ -42,6 +42,8 @@ app.get('/', routes.index);
 
 var rooms = {};
 
+var positions = {};
+
 function sendData(sender, sockets, data) {
 	for (var i in sockets) {
 		if (sockets[i] !== sender)
@@ -56,7 +58,13 @@ io.sockets.on('connection', function (socket) {
 	}
 	rooms[route].push(socket);
 	socket.room = route;
+	socket.on('setme', function(){
+		socket.broadcast.emit('set', positions);
+	});
+
     socket.on('send', function (data) {
     	sendData(socket, rooms[socket.room], data);
+    	positions[data.id] = data;
+    	console.log(positions);
     });
 });
