@@ -28,8 +28,7 @@ app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-
+app.use(express.favicon(__dirname + '/public/images/fav.ico'));
 
 // development only
 if ('development' == app.get('env')) {
