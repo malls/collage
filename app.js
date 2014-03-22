@@ -1,8 +1,3 @@
-
-/**
- * Module dependencies.
- */
-
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
@@ -41,7 +36,6 @@ app.get('/', routes.index);
 // app.get('/file-upload', UPLAOD LOGIC HERE);
 
 var rooms = {};
-
 var positions = {};
 
 function sendData(sender, sockets, data) {
@@ -59,7 +53,8 @@ io.sockets.on('connection', function (socket) {
 	rooms[route].push(socket);
 	socket.room = route;
 	socket.on('setme', function(){
-		socket.broadcast.emit('set', positions);
+		socket.emit('set', positions);
+		console.log("setme");
 	});
 
     socket.on('send', function (data) {

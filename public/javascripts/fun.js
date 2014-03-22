@@ -7,10 +7,10 @@ $(document).ready(function(){
 	socket.on('set', function(data){
 		console.log(data);
 
-		for(x in data){
-			document.getElementById(x.id).style.cssText = x.position;
-			console.log(x);
-		}
+		$.each(data, function(k,v){
+			document.getElementById(v.id).style.cssText = v.position;
+		});
+		
 	});//make this work
 
   	socket.on('move', function (data) {
