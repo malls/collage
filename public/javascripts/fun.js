@@ -6,14 +6,10 @@ socket.on('set', function(data){
 	});		
 });
 
-
-
 $(document).ready(function(){
-
 
   	socket.on('move', function (data) {
     	document.getElementById(data.id).style.cssText = data.position;
-    		
     });
 
 	$("img").draggable({
