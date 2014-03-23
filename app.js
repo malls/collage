@@ -52,10 +52,8 @@ io.sockets.on('connection', function (socket) {
 	}
 	rooms[route].push(socket);
 	socket.room = route;
-	socket.on('setme', function(){
-		socket.emit('set', positions);
-		console.log("setme");
-	});
+
+	socket.emit('set', positions);
 
     socket.on('send', function (data) {
     	sendData(socket, rooms[socket.room], data);
