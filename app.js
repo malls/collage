@@ -38,17 +38,9 @@ db.on("error", function(err){
 app.get('/', routes.index);
 app.get('/flowers', function(req,res){res.render('room', { title: 'Flower Garden' })}); 
 
-// app.get('/file-upload', UPLAOD LOGIC HERE);
+// app.get('/file-upload', UPLOAD LOGIC HERE);
 
 var rooms = {};
-var positions = {};
-
-function sendData(sender, sockets, data) {
-	for (var i in sockets) {
-		if (sockets[i] !== sender)
-			sockets[i].emit('move', data);
-	}
-};
 
 io.sockets.on('connection', function (socket) {
 	// var route = socket.socket.options.host; 
@@ -57,16 +49,25 @@ io.sockets.on('connection', function (socket) {
 	// }
 	// rooms[route].push(socket);
 	// socket.room = route;
-
 	// console.log(route);
 
-	socket.emit('set', positions);
+	socket.on('setme', function(data){
+		db.hgetall(data, function(err, reply){
+			socket.emit('set', reply);
+		});
+		
+	});
+
+	function sendData(sender, sockets, data) {
+		for (var i in sockets) {
+			if (sockets[i] !== sender)
+				sockets[i].emit('move', data);
+		}
+	};
 
     socket.on('send', function (data) {
     	sendData(socket, rooms[socket.room], data);
-    	positions[data.id] = data;
-  		db.set(data.id, data);
-
+  		db.hset(data.room, data.id, data.position);
     });
 
     socket.on('disconnect', function(){

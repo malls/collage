@@ -1,14 +1,14 @@
 var socket = io.connect(document.location.host);
 
-socket.on('set', function(data){
-	$.each(data, function(k,v){
-		document.getElementById(v.id).style.cssText = v.position;
-	});		
-});
-
 $(document).ready(function(){
 
-	console.log(socket);
+	socket.emit('setme', document.location.host);
+
+	socket.on('set', function(data){
+		$.each(data, function(k,v){
+			document.getElementById(k).style.cssText = v;
+		});		
+	});
 
   	socket.on('move', function (data) {
     	document.getElementById(data.id).style.cssText = data.position;
