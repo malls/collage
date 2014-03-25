@@ -10,6 +10,7 @@
     "jade": "*",
     "socket.io": "latest",
     "aws-sdk": "latest",
-    "dotenv": "latest"
+    "dotenv": "latest",
+    "redis": "latest"
   }
 }

@@ -8,6 +8,8 @@ socket.on('set', function(data){
 
 $(document).ready(function(){
 
+	console.log(socket);
+
   	socket.on('move', function (data) {
     	document.getElementById(data.id).style.cssText = data.position;
     });
@@ -16,8 +18,10 @@ $(document).ready(function(){
 		drag: function (event, position){
 			var position = this.style.cssText;
 			var id = this.id;
-			socket.emit('send', {position: position, id: id});
+			var url = this.src;
+			socket.emit('send', {position: position, id: id, url: url, room: document.location.host});
 		}
 	});
+
 
 });
