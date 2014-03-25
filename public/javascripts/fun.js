@@ -20,7 +20,7 @@ $(document).ready(function(){
 			var position = this.style.cssText;
 			var id = this.id;
 			var url = this.src;
-			socket.emit('send', {position: position, id: id, url: url});
+			socket.emit('send', {position: position, id: id, url: url, room: document.location.host});
 			//image url here for later functionality
 		}
 	});

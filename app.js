@@ -29,7 +29,7 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-if (process.env.REDISTOGO_URL){
+if ('production'){
 	var rtg   = require("url").parse(process.env.REDISTOGO_URL);
 	var db = require("redis").createClient(rtg.port, rtg.hostname);
 	db.auth(rtg.auth.split(":")[1]);
@@ -60,20 +60,15 @@ io.sockets.on('connection', function (socket) {
 
 	socket.on('setme', function(data){
 		db.hgetall(data, function(err, reply){
+			// console.log(reply);
 			socket.emit('set', reply);
 		});
 	});
 
-	function sendData(sender, sockets, data) {
-		for (var i in sockets) {
-			if (sockets[i] !== sender)
-				sockets[i].emit('move', data);
-		}
-	};
-
     socket.on('send', function (data) {
-    	sendData(socket, rooms[socket.room], data);
+    	socket.broadcast.emit('move', data)
   		db.hset(data.room, data.id, data.position);
+  		console.log(data.room);
     });
 
     socket.on('disconnect', function(){
