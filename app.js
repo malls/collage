@@ -67,8 +67,11 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('send', function (data) {
     	socket.broadcast.emit('move', data)
-  		db.hset(data.room, data.id, data.position);
-  		console.log(data.room);
+    });
+
+    socket.on('stopdrag', function(data){
+    	db.hset(data.room, data.id, data.position);
+    	console.log(data);
     });
 
     socket.on('disconnect', function(){

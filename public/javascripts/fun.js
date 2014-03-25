@@ -1,6 +1,9 @@
 var socket = io.connect(document.location.host);
 
 $(document).ready(function(){
+	var position;
+	var id;
+	var url;
 
 	socket.emit('setme', document.location.host);
 	// here the location is sent for later room logic
@@ -17,12 +20,15 @@ $(document).ready(function(){
 
 	$("img").draggable({
 		drag: function (event, position){
-			var position = this.style.cssText;
-			var id = this.id;
-			var url = this.src;
-			socket.emit('send', {position: position, id: id, url: url, room: document.location.host});
-			//image url here for later functionality
+			position = this.style.cssText;
+			id = this.id;
+			url = this.src;
+			socket.emit('send', {position: position, id: id, url: url});
 		}
+	});
+
+	$("img").on('dragstop', function(event, position){
+		socket.emit('stopdrag', {position: this.style.cssText, id: this.id, url: this.src, room: document.location.host});
 	});
 
 });
