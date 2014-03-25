@@ -29,14 +29,14 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-// if (process.env.REDISTOGO_URL){
-// 	var rtg   = require("url").parse(process.env.REDISTOGO_URL);
-// 	var db = require("redis").createClient(rtg.port, rtg.hostname);
-// 	db.auth(rtg.auth.split(":")[1]);
-// } else {
+if (process.env.REDISTOGO_URL){
+	var rtg   = require("url").parse(process.env.REDISTOGO_URL);
+	var db = require("redis").createClient(rtg.port, rtg.hostname);
+	db.auth(rtg.auth.split(":")[1]);
+} else {
 	var redis = require('redis');
 	var db = redis.createClient();
-// }
+}
 
 db.on("error", function(err){
 	console.log("Error: " + err);
