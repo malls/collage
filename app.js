@@ -65,14 +65,12 @@ io.sockets.on('connection', function (socket) {
     socket.on('send', function (data) {
     	sendData(socket, rooms[socket.room], data);
     	positions[data.id] = data;
+  		db.set(data.id, data);
 
-//   	db.set(data.id, data);
-//see if these are the same
-    	db.set(data.id, {
-    		"id": data.id,
-    		"position": data.position,
-    		"url": data.url,
-    		"room": data.room
-    	});
     });
+
+    socket.on('disconnect', function(){
+    	db.bgsave();
+    });
+
 });
