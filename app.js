@@ -29,25 +29,37 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-if ('production'){
-	var rtg   = require("url").parse(process.env.REDISTOGO_URL);
-	var db = require("redis").createClient(rtg.port, rtg.hostname);
-	db.auth(rtg.auth.split(":")[1]);
-} else {
+// if (process.env.REDISTOGO_URL){
+// 	var rtg   = require("url").parse(process.env.REDISTOGO_URL);
+// 	var db = require("redis").createClient(rtg.port, rtg.hostname);
+// 	db.auth(rtg.auth.split(":")[1]);
+// } else {
 	var redis = require('redis');
 	var db = redis.createClient();
-}
+// }
 
 db.on("error", function(err){
 	console.log("Error: " + err);
 });
 
 app.get('/', routes.index);
-app.get('/flowers', function(req,res){res.render('room', { title: 'Flower Garden' })}); 
+app.get('/stylesheets/*', function(req,res){
+	res.sendfile("public" + req.url);
+});
+app.get('/javascripts/*', function(req,res){
+	console.log("public" + req.url);
+	res.sendfile("public" + req.url);
+});
+app.get('/images/*', function(req,res){
+	res.sendfile("public" + req.url);
+});
+app.get('/*', function(req,res){
+	res.render('room');
+}); 
 
 // app.get('/file-upload', UPLOAD LOGIC HERE);
 
-var rooms = {};
+// var rooms = {};
 
 io.sockets.on('connection', function (socket) {
 	// var route = socket.socket.options.host; 
@@ -56,7 +68,6 @@ io.sockets.on('connection', function (socket) {
 	// }
 	// rooms[route].push(socket);
 	// socket.room = route;
-	// console.log(route);
 
 	socket.on('setme', function(data){
 		db.hgetall(data, function(err, reply){
@@ -71,7 +82,6 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('stopdrag', function(data){
     	db.hset(data.room, data.id, data.position);
-    	console.log(data);
     });
 
     socket.on('disconnect', function(){

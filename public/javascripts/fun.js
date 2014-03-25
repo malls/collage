@@ -1,17 +1,17 @@
 var socket = io.connect(document.location.host);
 
 $(document).ready(function(){
-	var position;
-	var id;
-	var url;
+
+	document.title = socket.socket.options.document.location.pathname;
 
 	socket.emit('setme', document.location.host);
-	// here the location is sent for later room logic
+	// here the location is sent for additional room logic to be used later
 
-	socket.on('set', function(data){
+	socket.on('set', function(data, pagetitle){
 		$.each(data, function(k,v){
 			document.getElementById(k).style.cssText = v;
-		});		
+		});
+
 	});
 
   	socket.on('move', function (data) {
@@ -20,10 +20,9 @@ $(document).ready(function(){
 
 	$("img").draggable({
 		drag: function (event, position){
-			position = this.style.cssText;
-			id = this.id;
-			url = this.src;
-			socket.emit('send', {position: position, id: id, url: url});
+			var position = this.style.cssText;
+			var id = this.id;
+			socket.emit('send', {position: position, id: id});
 		}
 	});
 
