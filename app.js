@@ -5,8 +5,6 @@ var http = require('http');
 var path = require('path');
 var AWS = require('aws-sdk');
 var dotenv = require('dotenv');
-var redis = require('redis');
-var db = redis.createClient();
 var app = express();
 var port = process.env.PORT || 3000;
 var io = require('socket.io').listen(app.listen(port));
@@ -29,6 +27,15 @@ app.use(express.favicon('fav.ico'));
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
+}
+
+if (process.env.REDISTOGO_URL){
+	var rtg   = require("url").parse(process.env.REDISTOGO_URL);
+	var db = require("redis").createClient(rtg.port, rtg.hostname);
+	db.auth(rtg.auth.split(":")[1]);
+} else {
+	var redis = require('redis');
+	var db = redis.createClient();
 }
 
 db.on("error", function(err){
@@ -55,7 +62,6 @@ io.sockets.on('connection', function (socket) {
 		db.hgetall(data, function(err, reply){
 			socket.emit('set', reply);
 		});
-		
 	});
 
 	function sendData(sender, sockets, data) {
