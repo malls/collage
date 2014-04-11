@@ -3,16 +3,27 @@ var redis = require('redis');
 var db = redis.createClient();
 var routes = require('./routes');
 var room = require('./routes/room');
-var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
-var AWS = require('aws-sdk');
-var dotenv = require('dotenv');
 var app = express();
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3000
 var io = require('socket.io').listen(app.listen(port));
 
+var dotenv = require('dotenv');
 dotenv.load();
+
+var AWS = require('aws-sdk');
+
+var AWS_ACCESS_KEY_ID = process.env.AS3_ACCESS_KEY;
+var AWS_SECRET_ACCESS_KEY = process.env.AS3_SECRET_ACCESS_KEY;
+
+
+
+// s3.getBucketAcl(params, function (err, data) {
+//   if (err) console.log(err, err.stack);
+//   else     console.log(data);
+// });
+
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -24,8 +35,6 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use(express.favicon('fav.ico'));
 
 // development only
 if ('development' == app.get('env')) {
@@ -59,6 +68,16 @@ app.get('/*', room.load);
 // app.get('/file-upload', UPLOAD LOGIC HERE);
 
 io.sockets.on('connection', function (socket) {
+
+  socket.on('ask', function(){
+    db.keys('*', function(err, reply){
+      socket.emit('getrooms', reply);
+    });
+  });
+
+
+
+
 	// var route = socket.socket.options.host; 
 	// if (typeof rooms[route] === 'undefined') {
 	// 	rooms[route] = [];
@@ -72,16 +91,16 @@ io.sockets.on('connection', function (socket) {
 		});
 	});
 
-    socket.on('send', function (data) {
-    	socket.broadcast.emit('move', data)
-    });
+  socket.on('send', function (data) {
+  	socket.broadcast.emit('move', data)
+  });
 
-    socket.on('stopdrag', function(data){
-    	db.hset(data.room, data.id, JSON.stringify(data));
-    });
+  socket.on('stopdrag', function(data){
+  	db.hset(data.room, data.id, JSON.stringify(data));
+  });
 
-    socket.on('disconnect', function(){
-    	db.bgsave();
-    });
+  socket.on('disconnect', function(){
+  	db.bgsave();
+  });
 
 });

@@ -13,6 +13,7 @@
     "dotenv": "latest",
     "redis": "latest",
     "grunt": "latest",
-    "mongoose": "latest"
-  }
+    "grunt-develop": "latest",
+    "grunt-contrib-watch": "latest"
+    }
 }

@@ -1,13 +1,15 @@
 var socket = io.connect(document.location.host);
 
+
 $(function(){
+	
 	document.title = socket.socket.options.document.location.pathname;
 
 	socket.emit('setme', window.location.pathname.substr(1));
 	// console.log(window.location.pathname.substr(1));
 
 	socket.on('set', function(data){
-		console.log(data.background);
+		console.log(data);
 
 		if(data.background){
 			document.getElementsByTagName('body')[0].style.background = data.background;

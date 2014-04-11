@@ -1,2 +1,7 @@
-p#title this is the index
-a(href="/flowers") flowers
+extends layout
+
+block content
+  script(src='/javascripts/dex.js')
+  body(onload="loadIndex()")
+    h4#title room index
+    ul#roomlist
