@@ -7,17 +7,22 @@ $(function(){
 	// console.log(window.location.pathname.substr(1));
 
 	socket.on('set', function(data){
-				
+		console.log(data.background);
+
+		if(data.background){
+			document.getElementsByTagName('body')[0].style.background = data.background;
+			delete data.background;
+		}
+
 		$.each(data, function(k,v){
 			var values = JSON.parse(v);
-			console.log(values);
 			var x = document.createElement("img");
 			x.id = k;
 			x.src = values.url;
 			x.style.cssText = values.position;
 			document.getElementById('zone').appendChild(x);		
 		});
-		
+
 		$("img").draggable({
 			drag: function (event, position){
 				var position = this.style.cssText;
@@ -32,7 +37,7 @@ $(function(){
 	    });
 
 
-		$("img").on('dragstop', function(event, position){
+		$("img").on('dragstop', function(event){
 			socket.emit('stopdrag', {position: this.style.cssText, id: this.id, url: this.src, room: window.location.pathname.substr(1)});
 		});
 

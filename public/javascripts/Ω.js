@@ -28,6 +28,10 @@ var Ω = function(selector){
 				me = document.getElementById(selector);
 			}else if( selector === document ){
 				return document;
+			}else if( selector === 'body' ){
+				me = document.getElementsByTagName('body')[0];
+			}else if( selector === 'html' ){
+				me = document.getElementsByTagName('html')[0];
 			}else{
 				me = document.getElementsByTagName(selector);
 			}
@@ -117,6 +121,17 @@ var Ω = function(selector){
 			for( i = 0; i < me.length; i++ ){
 			me[i].style.display = "";
 			}
+		}
+		return Ω;
+	},
+
+	setBackground: function(input){
+		if(input instanceof Array){
+			for(var i = 0; i < input.length; i++){
+				me[i].style.background = input;
+			}
+		} else {
+		me.style.background = input;
 		}
 		return Ω;
 	},
@@ -288,12 +303,6 @@ var Ω = function(selector){
 };
 
 var me = Ω.prototype.obj;
-
-Object.prototype.each = function (fn){
-	for( i = 0; i < me.length; i++ ){
-		fn(me[i]);
-	}
-};
 
 //shorthand 
 
