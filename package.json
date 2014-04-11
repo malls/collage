@@ -1,5 +1,5 @@
 {
-  "name": "application-name",
+  "name": "Collager",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -11,6 +11,8 @@
     "socket.io": "latest",
     "aws-sdk": "latest",
     "dotenv": "latest",
-    "redis": "latest"
+    "redis": "latest",
+    "grunt": "latest",
+    "mongoose": "latest"
   }
 }
