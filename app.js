@@ -1,4 +1,4 @@
-// var express = require('express.io');
+var express = require('express.io');
 var redis = require('redis');
 var db = redis.createClient(6379);
 var index = require('./controllers/index');
@@ -40,12 +40,12 @@ app.use(express.favicon('fav.ico'));
 // }
 
 //uncomment below for heroku deployment
-if (process.env.REDISTOGO_URL){
-	var rtg   = require("url").parse(process.env.REDISTOGO_URL);
-	var db = require("redis").createClient(rtg.port, rtg.hostname);
-	db.auth(rtg.auth.split(":")[1]);
-} else {
-}
+// if (process.env.REDISTOGO_URL){
+// 	var rtg   = require("url").parse(process.env.REDISTOGO_URL);
+// 	var db = require("redis").createClient(rtg.port, rtg.hostname);
+// 	db.auth(rtg.auth.split(":")[1]);
+// } else {
+// }
 
 db.select(0);
 db.set("testkey", "redis connected", function(){
