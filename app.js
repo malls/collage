@@ -1,6 +1,5 @@
 var express = require('express.io');
 var redis = require('redis');
-var db = redis.createClient(6379);
 var index = require('./controllers/index');
 var room = require('./controllers/room');
 var http = require('http');
@@ -37,12 +36,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 //   app.use(express.errorHandler());
 // }
 
-//uncomment below for heroku deployment
 if (process.env.REDISTOGO_URL){
-	var rtg   = require("url").parse(process.env.REDISTOGO_URL);
-	var db = require("redis").createClient(rtg.port, rtg.hostname);
-	db.auth(rtg.auth.split(":")[1]);
+  var rtg   = require("url").parse(process.env.REDISTOGO_URL);
+  var db = require("redis").createClient(rtg.port, rtg.hostname);
+  db.auth(rtg.auth.split(":")[1]);
 } else {
+  var db = redis.createClient(6379);
 }
 
 db.select(0);
