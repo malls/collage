@@ -1,7 +1,6 @@
 var socket = io.connect(document.location.host);
 
 var changeBg = function (){
-  console.log(this.id);
   socket.emit('setme', this.id);
   socket.on('set', function(data){
     document.getElementsByTagName("body")[0].style.background = data.background;

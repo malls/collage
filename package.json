@@ -9,11 +9,15 @@
     "express": "3.4.8",
     "jade": "*",
     "socket.io": "latest",
-    "aws-sdk": "latest",
+    "knox": "latest",
     "dotenv": "latest",
     "redis": "latest",
+    "hiredis": "latest"
+    },
+  "devDependencies": {
     "grunt": "latest",
     "grunt-develop": "latest",
     "grunt-contrib-watch": "latest"
-    }
+    
+  }
 }

@@ -3,13 +3,11 @@ var socket = io.connect(document.location.host);
 
 $(function(){
 	
-	document.title = socket.socket.options.document.location.pathname;
+	document.title = socket.socket.options.document.location.pathname.substr(1);
 
 	socket.emit('setme', window.location.pathname.substr(1));
-	// console.log(window.location.pathname.substr(1));
 
 	socket.on('set', function(data){
-		console.log(data);
 
 		if(data.background){
 			document.getElementsByTagName('body')[0].style.background = data.background;
@@ -34,9 +32,9 @@ $(function(){
 		}).css("position", "absolute");
 			
 
-	  	socket.on('move', function (data) {
-	    	document.getElementById(data.id).style.cssText = data.position;
-	    });
+  	socket.on('move', function (data) {
+    	document.getElementById(data.id).style.cssText = data.position;
+    });
 
 
 		$("img").on('dragstop', function(event){

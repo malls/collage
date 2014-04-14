@@ -1,29 +1,23 @@
 var express = require('express.io');
 var redis = require('redis');
-var db = redis.createClient();
+var db = redis.createClient(6379);
 var routes = require('./routes');
 var room = require('./routes/room');
 var http = require('http');
 var path = require('path');
+var knox = require('knox');
 var app = express();
-var port = process.env.PORT || 3000
+var port = process.env.PORT || 3000;
 var io = require('socket.io').listen(app.listen(port));
 
 var dotenv = require('dotenv');
 dotenv.load();
 
-var AWS = require('aws-sdk');
-
-var AWS_ACCESS_KEY_ID = process.env.AS3_ACCESS_KEY;
-var AWS_SECRET_ACCESS_KEY = process.env.AS3_SECRET_ACCESS_KEY;
-
-
-
-// s3.getBucketAcl(params, function (err, data) {
-//   if (err) console.log(err, err.stack);
-//   else     console.log(data);
-// });
-
+var client = knox.createClient({
+    key: process.env.AS3_ACCESS_KEY
+  , secret: process.env.AS3_SECRET_ACCESS_KEY
+  , bucket: process.env.AS3_BUCKET
+});
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -35,6 +29,8 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(express.favicon('fav.ico'));
 
 // development only
 if ('development' == app.get('env')) {
@@ -48,6 +44,15 @@ if ('development' == app.get('env')) {
 // 	db.auth(rtg.auth.split(":")[1]);
 // } else {
 // }
+
+db.select(0);
+db.keys("*", function(x,y){console.log("none:",y)});
+db.set("testkey", "redis connection works", function(){
+  db.get("testkey", function(err, response){
+    console.log(response);
+  });
+  db.del("testkey");
+});
 
 db.on("error", function(err){
 	console.log("Error: " + err);
@@ -74,9 +79,6 @@ io.sockets.on('connection', function (socket) {
       socket.emit('getrooms', reply);
     });
   });
-
-
-
 
 	// var route = socket.socket.options.host; 
 	// if (typeof rooms[route] === 'undefined') {
