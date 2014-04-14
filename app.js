@@ -40,12 +40,12 @@ app.use(express.favicon('fav.ico'));
 // }
 
 //uncomment below for heroku deployment
-// if (process.env.REDISTOGO_URL){
-// 	var rtg   = require("url").parse(process.env.REDISTOGO_URL);
-// 	var db = require("redis").createClient(rtg.port, rtg.hostname);
-// 	db.auth(rtg.auth.split(":")[1]);
-// } else {
-// }
+if (process.env.REDISTOGO_URL){
+	var rtg   = require("url").parse(process.env.REDISTOGO_URL);
+	var db = require("redis").createClient(rtg.port, rtg.hostname);
+	db.auth(rtg.auth.split(":")[1]);
+} else {
+}
 
 db.select(0);
 db.set("testkey", "redis connected", function(){
@@ -114,12 +114,5 @@ io.sockets.on('connection', function (socket) {
   socket.on('disconnect', function(){
   	db.bgsave();
   });
-
-  // socket.on('upload', function(data){
-  //   console.log(data);
-  //   s3.putFile(data.files.name, data.files.name, function(err, res){
-  //     console.log(res," is the response from amazon");
-  //   });
-  // });
 
 });
