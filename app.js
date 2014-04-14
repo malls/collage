@@ -36,13 +36,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 //   app.use(express.errorHandler());
 // }
 
-if (process.env.REDISTOGO_URL){
+// if (process.env.REDISTOGO_URL){
   var rtg   = require("url").parse(process.env.REDISTOGO_URL);
   var db = require("redis").createClient(rtg.port, rtg.hostname);
   db.auth(rtg.auth.split(":")[1]);
-} else {
-  var db = redis.createClient(6379);
-}
+// } else {
+  // var db = redis.createClient(6379);
+// }
 
 db.select(0);
 db.set("testkey", "redis connected", function(){
