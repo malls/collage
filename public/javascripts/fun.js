@@ -35,11 +35,17 @@ $(function(){
 		}).css("position", "absolute");
 
   	socket.on('move', function (data) {
+  		console.log(data);
+	  		var newImg = document.createElement('img');
+	  		newImg.src = data.url;
+	  		newImg.id = data.id;
+  		if(!document.getElementById(data.id)){
+	  		document.getElementById('zone').appendChild(newImg);
+  		}
     	document.getElementById(data.id).style.cssText = data.position;
     });
 
   	socket.on('newimage', function(data){
-  		console.log(data,"got anything");
   		var newImg = document.createElement('img');
   		newImg.src = data.url;
   		newImg.id = data.id;
@@ -49,21 +55,15 @@ $(function(){
 				drag: function (event, position){
 					var position = this.style.cssText;
 					var id = this.id;
-					socket.emit('send', {position: position, id: id});
+					var url = this.src;
+					socket.emit('send', {position: position, id: id, url: url});
 				}
 			}).css("position", "absolute");
-
-			$("img").on('dragstop', function(event){
-				socket.emit('stopdrag', {position: this.style.cssText, id: this.id, url: this.src, room: window.location.pathname.substr(1)});
-			});
-
-
   	});
 
-		$("img").on('dragstop', function(event){
+		$(document).on('dragstop', 'img', function(event){
 			socket.emit('stopdrag', {position: this.style.cssText, id: this.id, url: this.src, room: window.location.pathname.substr(1)});
 		});
-
 
 	});
 });

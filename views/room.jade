@@ -4,6 +4,7 @@ block content
   script(src='/javascripts/fun.js')
   body
     #zone
-    form(method="POST" action="/file-upload" enctype="multipart/form-data")
-      input(type="file" name="file")
-      input(type="submit" value="submit")
+    #uploadzone
+      form(method="POST" action="/file-upload" enctype="multipart/form-data")
+        input(type="file" name="file")
+        input(type="submit" value="submit")

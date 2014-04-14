@@ -80,9 +80,7 @@ app.get('/:room', room.load);
           return res.send(500, err);
         }
         var imgid = crypto.randomBytes(5).toString('hex');
-        // res.redirect('back'); 
         asocket.emit('newimage', {url: s3res.client._httpMessage.url, id: imgid});
-
       });
     });
   });

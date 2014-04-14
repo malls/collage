@@ -18,3 +18,8 @@ img{
 	max-height: 200px;
 	max-width: auto;
 }
+
+#uploadzone{
+  position: absolute;
+  bottom: 0;
+}
