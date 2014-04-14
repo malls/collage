@@ -6,12 +6,23 @@ var http = require('http');
 var path = require('path');
 var knox = require('knox');
 var crypto = require('crypto');
+var url = require('url');
 var app = express();
 var port = process.env.PORT || 3000;
 var io = require('socket.io').listen(app.listen(port));
 
-var dotenv = require('dotenv');
-dotenv.load();
+//development
+// var dotenv = require('dotenv');
+// dotenv.load();
+// var db = redis.createClient(6379);
+// if ('development' == app.get('env')) {
+//   app.use(express.errorHandler());
+// }
+
+//production
+var redisURL = url.parse(process.env.REDISCLOUD_URL);
+var db = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
+db.auth(redisURL.auth.split(":")[1]);
 
 var s3 = knox.createClient({
     key: process.env.AS3_ACCESS_KEY
@@ -30,19 +41,6 @@ app.use(express.methodOverride());
 app.use(express.multipart({ defer: true }));
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
-
-// development only
-// if ('development' == app.get('env')) {
-//   app.use(express.errorHandler());
-// }
-
-// if (process.env.REDISTOGO_URL){
-  var rtg   = require("url").parse(process.env.REDISTOGO_URL);
-  var db = require("redis").createClient(rtg.port, rtg.hostname);
-  db.auth(rtg.auth.split(":")[1]);
-// } else {
-  // var db = redis.createClient(6379);
-// }
 
 db.select(0);
 db.set("testkey", "redis connected", function(){
