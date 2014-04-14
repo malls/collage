@@ -10,8 +10,8 @@ var url = require('url');
 var app = express();
 var port = process.env.PORT || 3000;
 var io = require('socket.io').listen(app.listen(port));
-// var dotenv = require('dotenv');
-// dotenv.load();
+var dotenv = require('dotenv');
+dotenv.load();
 
 // all environments
 app.set('port', process.env.PORT || 3000);

@@ -7,9 +7,9 @@
 // db.auth(redisURL.auth.split(":")[1]);
 
 module.exports = {
-	load : function(req, res) {
+	load: function(req, res) {
 		// db.hgetall(req.params.room, function(err, reply) {
 			res.render('room');
-		};
+		}
 	
 };
