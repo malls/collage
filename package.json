@@ -13,7 +13,8 @@
     "dotenv": "latest",
     "redis": "latest",
     "hiredis": "latest",
-    "requirejs": "latest"
+    "requirejs": "latest",
+    "url": "latest"
     },
   "devDependencies": {
     "grunt": "latest",

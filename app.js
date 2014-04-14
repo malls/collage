@@ -1,19 +1,31 @@
-var express = require('express.io');
-var redis = require('redis');
 var index = require('./controllers/index');
 var room = require('./controllers/room');
+var express = require('express.io');
+var crypto = require('crypto');
+var redis = require('redis');
 var http = require('http');
 var path = require('path');
 var knox = require('knox');
-var crypto = require('crypto');
 var url = require('url');
 var app = express();
 var port = process.env.PORT || 3000;
 var io = require('socket.io').listen(app.listen(port));
+var dotenv = require('dotenv');
+dotenv.load();
+
+// all environments
+app.set('port', process.env.PORT || 3000);
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+app.use(express.logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded());
+app.use(express.methodOverride());
+app.use(express.multipart({ defer: true }));
+app.use(app.router);
+app.use(express.static(path.join(__dirname, 'public')));
 
 //development
-// var dotenv = require('dotenv');
-// dotenv.load();
 // var db = redis.createClient(6379);
 // if ('development' == app.get('env')) {
 //   app.use(express.errorHandler());
@@ -30,18 +42,6 @@ var s3 = knox.createClient({
   , bucket: process.env.AS3_BUCKET
 });
 
-// all environments
-app.set('port', process.env.PORT || 3000);
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-app.use(express.logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded());
-app.use(express.methodOverride());
-app.use(express.multipart({ defer: true }));
-app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
-
 db.select(0);
 db.set("testkey", "redis connected", function(){
   db.get("testkey", function(err, response){
@@ -52,6 +52,7 @@ db.on("error", function(err){
 	console.log("Error: " + err);
 });
 
+//routes - move elsewhere
 app.get('/', index.show);
 app.get('/stylesheets/*', function(req,res){
 	res.sendfile("public" + req.url);
@@ -80,6 +81,8 @@ app.get('/:room', room.load);
     });
   });
 
+
+//socket stuff
 var asocket;
 
 io.sockets.on('connection', function (socket) {
