@@ -1,11 +1,12 @@
 var express = require('express.io');
 var redis = require('redis');
 var db = redis.createClient(6379);
-var routes = require('./routes');
-var room = require('./routes/room');
+var index = require('./controllers/index');
+var room = require('./controllers/room');
 var http = require('http');
 var path = require('path');
 var knox = require('knox');
+var crypto = require('crypto');
 var app = express();
 var port = process.env.PORT || 3000;
 var io = require('socket.io').listen(app.listen(port));
@@ -13,7 +14,7 @@ var io = require('socket.io').listen(app.listen(port));
 var dotenv = require('dotenv');
 dotenv.load();
 
-var client = knox.createClient({
+var s3 = knox.createClient({
     key: process.env.AS3_ACCESS_KEY
   , secret: process.env.AS3_SECRET_ACCESS_KEY
   , bucket: process.env.AS3_BUCKET
@@ -27,6 +28,7 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
+app.use(express.multipart({ defer: true }));
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -46,19 +48,16 @@ if ('development' == app.get('env')) {
 // }
 
 db.select(0);
-db.keys("*", function(x,y){console.log("none:",y)});
-db.set("testkey", "redis connection works", function(){
+db.set("testkey", "redis connected", function(){
   db.get("testkey", function(err, response){
     console.log(response);
-  });
-  db.del("testkey");
+  });  db.del("testkey");
 });
-
 db.on("error", function(err){
 	console.log("Error: " + err);
 });
 
-app.get('/', routes.index);
+app.get('/', index.show);
 app.get('/stylesheets/*', function(req,res){
 	res.sendfile("public" + req.url);
 });
@@ -68,24 +67,37 @@ app.get('/javascripts/*', function(req,res){
 app.get('/images/*', function(req,res){
 	res.sendfile("public" + req.url);
 });
-app.get('/*', room.load);
+app.use(express.multipart({ defer: true }));
+app.get('/:room', room.load);
+  app.post('/file-upload', function (req, res) {
+    var headers = {
+      'x-amz-acl': 'public-read'
+    };
+    req.form.on('part', function (part) {
+      headers['Content-Length'] = part.byteCount;
+      s3.putStream(part, part.filename, headers, function (err, s3res) {
+        if (err) {
+          return res.send(500, err);
+        }
+        var imgid = crypto.randomBytes(5).toString('hex');
+        // res.redirect('back'); 
+        asocket.emit('newimage', {url: s3res.client._httpMessage.url, id: imgid});
 
-// app.get('/file-upload', UPLOAD LOGIC HERE);
+      });
+    });
+  });
+
+var asocket;
 
 io.sockets.on('connection', function (socket) {
+
+  asocket = socket;
 
   socket.on('ask', function(){
     db.keys('*', function(err, reply){
       socket.emit('getrooms', reply);
     });
   });
-
-	// var route = socket.socket.options.host; 
-	// if (typeof rooms[route] === 'undefined') {
-	// 	rooms[route] = [];
-	// }
-	// rooms[route].push(socket);
-	// socket.room = route;
 
 	socket.on('setme', function(data){
 		db.hgetall(data, function(err, reply){
@@ -104,5 +116,12 @@ io.sockets.on('connection', function (socket) {
   socket.on('disconnect', function(){
   	db.bgsave();
   });
+
+  // socket.on('upload', function(data){
+  //   console.log(data);
+  //   s3.putFile(data.files.name, data.files.name, function(err, res){
+  //     console.log(res," is the response from amazon");
+  //   });
+  // });
 
 });

@@ -12,7 +12,8 @@
     "knox": "latest",
     "dotenv": "latest",
     "redis": "latest",
-    "hiredis": "latest"
+    "hiredis": "latest",
+    "requirejs": "latest"
     },
   "devDependencies": {
     "grunt": "latest",
