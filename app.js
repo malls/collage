@@ -33,7 +33,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //production
 var redisURL = url.parse(process.env.REDISCLOUD_URL);
-console.log(redisURL);
+console.log("process.env",process.env)
+console.log("redisURL",redisURL);
 var db = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
 db.auth(redisURL.auth.split(":")[1]);
 
