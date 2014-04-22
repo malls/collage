@@ -71,6 +71,7 @@ app.get('/images/*', function(req,res){
 });
 app.use(express.multipart({ defer: true }));
 app.get('/:room', room.load);
+
 app.post('/file-upload', function (req, res) {
   var headers = {
     'x-amz-acl': 'public-read',
@@ -87,7 +88,6 @@ app.post('/file-upload', function (req, res) {
     });
   });
 });
-
 
 //socket stuff
 var asocket;

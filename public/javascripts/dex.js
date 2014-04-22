@@ -29,3 +29,9 @@ var loadIndex = function(){
     }
   });
 };
+
+var garden = function(e){
+  e.preventDefault();
+  window.location = document.location.origin + "/" + document.getElementsByTagName('input')[0].value;
+  return false;
+};

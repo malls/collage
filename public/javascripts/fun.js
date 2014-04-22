@@ -77,4 +77,15 @@ $(function(){
     });
 
 	});
+
+  var upload = function(){
+    console.log($(this));
+    $.ajax({
+      type: 'POST',
+      url: '/file-upload',
+      data: 'xxx'
+    });
+  }
+
+
 });

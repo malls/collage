@@ -7,14 +7,13 @@ block content
     #navbar
       ul
         li#baritem
-          form NET ART GARDEN PARTY
         li#baritem upload an image:
         li#baritem
-          form(method="POST" action="/file-upload" enctype="multipart/form-data")
+          form(method="POST" action="upload()" enctype="multipart/form-data")
             input(type="file" name="file")
             input(type="submit" value="submit")
         li#baritem change the background:
         li#baritem
           #bgzone
-            input(type="text" id="bgInput" name="url" placeholder="change background")
+            input(type="text" id="bgInput" name="url" placeholder="paste a url")
             button#bgbutton submit 
