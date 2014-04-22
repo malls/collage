@@ -12,7 +12,7 @@ var clearBg = function(){
 };
 
 var loadIndex = function(){
-  var roomlist = document.getElementById('roomlist')
+  var roomlist = document.getElementById('roomlist');
   socket.emit('ask');
   socket.on('getrooms', function(data){
     for(var i = 0; i < data.length; i++){

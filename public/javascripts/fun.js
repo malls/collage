@@ -99,7 +99,7 @@ $(function(){
       url: '/file-upload',
       data: 'xxx'
     });
-  }
+  };
 
 
 });

@@ -202,7 +202,7 @@ var Ω = function(selector){
 	    me.style.filter != "FlipH" &&
 	    me.style.msFilter != "FlipH"
 	   ){
-			me.style.transform = "scaleX(-1)" 
+			me.style.transform = "scaleX(-1)";
 	    me.style.mozTransform = "scaleX(-1)";
 	    me.style.oTransform = "scaleX(-1)";
 	    me.style.webkitTransform = "scaleX(-1)";
