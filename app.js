@@ -133,4 +133,9 @@ io.sockets.on('connection', function (socket) {
     db.hset(data.room, 'background', data.background);
   });
 
+  socket.on('destroy', function(data){
+    db.hdel(data.room, data.id);
+    socket.emit('remove', {id: data.id});
+  });
+
 });

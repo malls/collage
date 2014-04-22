@@ -50,7 +50,6 @@ $(function(){
       var newImg = document.createElement('img');
       newImg.src = data.url;
       newImg.id = data.id;
-      newImg.crossOrigin = "Anonymous";
       document.getElementById('zone').appendChild(newImg);
 
       $("img").draggable({
@@ -66,6 +65,14 @@ $(function(){
 		$(document).on('dragstop', 'img', function(event){
 			socket.emit('stopdrag', {position: this.style.cssText, id: this.id, url: this.src, room: room});
 		});
+
+    $(document).on('dblclick', 'img', function(event){
+      socket.emit('destroy', {id: this.id, room: room});
+    });
+
+    socket.on('remove', function(data){
+      Ω("#" + data.id).destroy();
+    });
 
     $('#bgbutton').click(function(e){
       e.preventDefault();
