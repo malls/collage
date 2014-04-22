@@ -15,11 +15,5 @@
     "hiredis": "latest",
     "requirejs": "latest",
     "url": "latest"
-    },
-  "devDependencies": {
-    "grunt": "latest",
-    "grunt-develop": "latest",
-    "grunt-contrib-watch": "latest"
-    
-  }
+    }
 }
