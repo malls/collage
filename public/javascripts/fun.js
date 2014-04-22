@@ -74,32 +74,22 @@ $(function(){
       Ω("#" + data.id).destroy();
     });
 
-    $('#bgbutton').click(function(e){
-      e.preventDefault();
-      var bgValue = document.getElementById('bgInput').value;
-      document.getElementById('bgInput').value = "";
-      Ω('body').setBackground(bgValue, "center center");
-      var bgText = document.getElementsByTagName('body')[0].style.background;
-      socket.emit('bg', {room: room, background: bgText});
-    });
+  });
 
-    $('#imgbutton').click(function(e){
-      e.preventDefault();
-      var imgValue = document.getElementById('imgInput').value;
-      document.getElementById('imgInput').value = "";
-      socket.emit('getId', {url: imgValue});
-    });
+  $('#bgbutton').click(function(e){
+    e.preventDefault();
+    var bgValue = document.getElementById('bgInput').value;
+    document.getElementById('bgInput').value = "";
+    Ω('body').setBackground(bgValue, "center center");
+    var bgText = document.getElementsByTagName('body')[0].style.background;
+    socket.emit('bg', {room: room, background: bgText});
+  });
 
-	});
-
-  var upload = function(){
-    console.log($(this));
-    $.ajax({
-      type: 'POST',
-      url: '/file-upload',
-      data: 'xxx'
-    });
-  };
-
+  $('#imgbutton').click(function(e){
+    e.preventDefault();
+    var imgValue = document.getElementById('imgInput').value;
+    document.getElementById('imgInput').value = "";
+    socket.emit('getId', {url: imgValue});
+  });
 
 });
