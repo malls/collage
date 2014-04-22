@@ -76,6 +76,13 @@ $(function(){
       socket.emit('bg', {room: room, background: bgText});
     });
 
+    $('#imgbutton').click(function(e){
+      e.preventDefault();
+      var imgValue = document.getElementById('imgInput').value;
+      document.getElementById('imgInput').value = "";
+      socket.emit('getId', {url: imgValue});
+    });
+
 	});
 
   var upload = function(){

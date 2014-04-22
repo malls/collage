@@ -122,6 +122,11 @@ io.sockets.on('connection', function (socket) {
     db.bgsave();
   });
 
+  socket.on('getId', function(data){
+    var imgid = crypto.randomBytes(5).toString('hex');
+    socket.emit('newimage', {url: data.url, id: imgid});
+  });
+
   socket.on('bg', function(data){
     console.log(data);
     socket.broadcast.emit('set', {background: data.background});
