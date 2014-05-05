@@ -30,16 +30,16 @@ app.all('*', function(req, res, next) {
   next();
  });
 
-//development
-// var db = redis.createClient(6379);
-// if ('development' == app.get('env')) {
-//   app.use(express.errorHandler());
-// }
+// development
+var db = redis.createClient(6379);
+if ('development' == app.get('env')) {
+  app.use(express.errorHandler());
+}
 
 //production
-var redisURL = url.parse(process.env.REDISCLOUD_URL);
-var db = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
-db.auth(redisURL.auth.split(":")[1]);
+// var redisURL = url.parse(process.env.REDISCLOUD_URL);
+// var db = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
+// db.auth(redisURL.auth.split(":")[1]);
 
 var s3 = knox.createClient({
     key: process.env.AS3_ACCESS_KEY,
