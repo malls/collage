@@ -1,6 +1,6 @@
 var index = require('./controllers/index');
 var room = require('./controllers/room');
-var express = require('express.io');
+var express = require('express');
 var crypto = require('crypto');
 var redis = require('redis');
 var http = require('http');
