@@ -2,8 +2,6 @@ var socket = io.connect(document.location.host);
 
 $(function(){
 	
-	document.title = socket.socket.options.document.location.pathname.substr(1);
-
   var room = window.location.pathname.substr(1);
 
 	socket.emit('setme', room);
@@ -12,7 +10,7 @@ $(function(){
 
 		if (data){
 			if(data.background){
-				document.getElementsByTagName('body')[0].style.background = data.background;
+				document.body.style.background = data.background;
 				delete data.background;
 			}
 
@@ -22,7 +20,7 @@ $(function(){
 				x.id = k;
 				x.src = values.url;
 				x.style.cssText = values.position;
-        x.crossOrigin = "Anonymous";
+        // x.crossOrigin = "Anonymous";
 				document.getElementById('zone').appendChild(x);		
 			});
 		}
@@ -81,7 +79,7 @@ $(function(){
     var bgValue = document.getElementById('bgInput').value;
     document.getElementById('bgInput').value = "";
     Ω('body').setBackground(bgValue, "center center");
-    var bgText = document.getElementsByTagName('body')[0].style.background;
+    var bgText = document.body.style.background;
     socket.emit('bg', {room: room, background: bgText});
   });
 

@@ -3,12 +3,12 @@ var socket = io.connect(document.location.host);
 var changeBg = function (){
   socket.emit('setme', this.id);
   socket.on('set', function(data){
-    document.getElementsByTagName("body")[0].style.background = data.background;
+    document.body.style.background = data.background;
   });
 };
 
 var clearBg = function(){
-  document.getElementsByTagName("body")[0].style.background = "";
+  document.body.style.background = "";
 };
 
 var loadIndex = function(){

@@ -72,7 +72,7 @@ app.get('/:room', room.load);
 app.post('/file-upload', function (req, res) {
   var headers = {
     'x-amz-acl': 'public-read',
-    'Access-Control-Allow-Origin': '*'
+    // 'Access-Control-Allow-Origin': '*'
   };
   req.form.on('part', function (part) {
     headers['Content-Length'] = part.byteCount;
