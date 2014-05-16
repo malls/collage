@@ -10,30 +10,27 @@ var _Ω = {
 
 	up: function(selector){
 		if(selector === undefined){
-			return window;
+			this.obj = document;
 		}else{
-			if( selector.toElement ){
-				console.log('passes');
-				this.obj = selector.toElement;
-			}else if( selector[0] === "." ){
-				selector = selector.slice(1);
-				this.obj = document.getElementsByClassName(selector);
-			}else if( selector[0] === "#" ){
-				selector = selector.slice(1);
-				this.obj = document.getElementById(selector);
-			}else if( selector === document ){
-				return document;
+			if( selector === document ){
+				this.obj = document;
 			}else if( selector === window ){
-				return window;
-			}else if( selector === 'body' ){
-				this.obj = document.body;
-			}else if( selector === 'html' ){
-				this.obj = document.getElementsByTagName('html')[0];
-			}else{
-				this.obj = document.getElementsByTagName(selector);
+				this.obj = window;
+			}else if( document.querySelectorAll(selector).length > 1 ){
+				this.obj = document.querySelectorAll(selector);
+			} else {
+				this.obj = document.querySelector(selector);
 			}
 		}
 		return _Ω;
+	},
+
+	// force wait until DOM elements are loaded for js to run
+
+	ready: function(fn){
+		this.obj.addEventListener("DOMContentLoaded", function(){
+			fn();
+		});
 	},
 
 	//general method to iterate through selected elements and apply the method
@@ -47,6 +44,22 @@ var _Ω = {
 				fn(this.obj[i]);
 			}
 		}
+	},
+
+	// parent and child selectors
+
+	parent: function(){
+		this.obj = this.obj.parentNode;
+		return _Ω;
+	},
+
+	child: function(x){
+		if(x){
+			this.obj = this.obj.childNodes[x - 1];
+		} else {
+			this.obj = this.obj.childNodes;
+		}
+		return _Ω;
 	},
 
 	//event listeners

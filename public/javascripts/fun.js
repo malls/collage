@@ -1,6 +1,6 @@
 var socket = io.connect(document.location.host);
 
-$(function(){
+Ω().ready(function(){
 	
   var room = window.location.pathname.substr(1);
 
@@ -8,30 +8,35 @@ $(function(){
 
 	socket.on('set', function(data){
 
-		if (data){
-			if(data.background){
-				document.body.style.background = data.background;
-				delete data.background;
-			}
+    var everyImageNeedsThese = function(){
+      Ω('img').on('dragstop', function(){
+        socket.emit('stopdrag', {position: this.style.cssText, id: this.id, url: this.src, room: room});
+      }).on('dblclick', function(){
+        socket.emit('destroy', {id: this.id, room: room});
+      }).draggable().drag(function(e){
+          var position = e.toElement.style.cssText;
+          var id = e.toElement.id;
+          socket.emit('send', {position: position, id: id});
+      });
+    };
 
-			$.each(data, function(k,v){
-				var values = JSON.parse(v);
-				var x = document.createElement("img");
-				x.id = k;
-				x.src = values.url;
-				x.style.cssText = values.position;
-        // x.crossOrigin = "Anonymous";
-				document.getElementById('zone').appendChild(x);		
-			});
-		}
+    if (data){
+      if(data.background){
+        document.body.style.background = data.background;
+        delete data.background;
+      }
 
-		$("img").draggable({
-			drag: function (event){
-				var position = this.style.cssText;
-				var id = this.id;
-				socket.emit('send', {position: position, id: id});
-			}
-		}).css("position", "absolute");
+      $.each(data, function(k,v){
+        var values = JSON.parse(v);
+        var x = document.createElement("img");
+        x.id = k;
+        x.src = values.url;
+        x.style.cssText = values.position;
+        document.getElementById('zone').appendChild(x);   
+      });
+    }
+
+    everyImageNeedsThese();
 
     socket.on('move', function (data) {
       console.log(data);
@@ -49,24 +54,9 @@ $(function(){
       newImg.src = data.url;
       newImg.id = data.id;
       document.getElementById('zone').appendChild(newImg);
-
-      $("img").draggable({
-				drag: function (event){
-					var position = this.style.cssText;
-					var id = this.id;
-					var url = this.src;
-					socket.emit('send', {position: position, id: id, url: url});
-				}
-			}).css("position", "absolute");
+      everyImageNeedsThese();
     });
 
-		$(document).on('dragstop', 'img', function(event){
-			socket.emit('stopdrag', {position: this.style.cssText, id: this.id, url: this.src, room: room});
-		});
-
-    $(document).on('dblclick', 'img', function(event){
-      socket.emit('destroy', {id: this.id, room: room});
-    });
 
     socket.on('remove', function(data){
       Ω("#" + data.id).destroy();
@@ -74,16 +64,16 @@ $(function(){
 
   });
 
-  $('#bgbutton').click(function(e){
+  Ω('#bgbutton').click(function(e){
     e.preventDefault();
     var bgValue = document.getElementById('bgInput').value;
     document.getElementById('bgInput').value = "";
-    Ω('body').setBackground(bgValue, "center center");
+    Ω('body').setBackground('white', bgValue, "center center");
     var bgText = document.body.style.background;
     socket.emit('bg', {room: room, background: bgText});
   });
 
-  $('#imgbutton').click(function(e){
+  Ω('#imgbutton').click(function(e){
     e.preventDefault();
     var imgValue = document.getElementById('imgInput').value;
     document.getElementById('imgInput').value = "";
