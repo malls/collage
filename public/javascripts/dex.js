@@ -1,15 +1,18 @@
 var socket = io.connect(document.location.host);
 
-var changeBg = function (){
-  socket.emit('setme', this.id);
-  socket.on('set', function(data){
-    document.body.style.background = data.background;
-  });
-};
 
-var clearBg = function(){
-  document.body.style.background = "";
-};
+// to do: decide if background changes are too annoying
+
+// var changeBg = function (){
+//   socket.emit('setme', this.id);
+//   socket.on('set', function(data){
+//     document.body.style.background = data.background;
+//   });
+// };
+
+// var clearBg = function(){
+//   document.body.style.background = "";
+// };
 
 var loadIndex = function(){
   var roomlist = document.getElementById('roomlist');
@@ -24,8 +27,8 @@ var loadIndex = function(){
       linkitem.appendChild(text);
       listitem.appendChild(linkitem);
       roomlist.appendChild(listitem);
-      listitem.onmouseover = changeBg;
-      listitem.onmouseleave = clearBg;
+      // listitem.onmouseover = changeBg;
+      // listitem.onmouseleave = clearBg;
     }
   });
 };

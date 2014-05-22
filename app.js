@@ -72,7 +72,7 @@ app.get('/:room', room.load);
 app.post('/file-upload', function (req, res) {
   var headers = {
     'x-amz-acl': 'public-read',
-    // 'Access-Control-Allow-Origin': '*'
+    'Access-Control-Allow-Origin': '*'
   };
   req.form.on('part', function (part) {
     headers['Content-Length'] = part.byteCount;
@@ -121,7 +121,10 @@ io.sockets.on('connection', function (socket) {
 
   socket.on('getId', function(data){
     var imgid = crypto.randomBytes(5).toString('hex');
+    urlString = JSON.stringify({url: data.url});
+    socket.broadcast.emit('newimage', {url: data.url, id: imgid});
     socket.emit('newimage', {url: data.url, id: imgid});
+    db.hset(data.room, data.imgid, urlString);
   });
 
   socket.on('bg', function(data){
@@ -132,7 +135,7 @@ io.sockets.on('connection', function (socket) {
 
   socket.on('destroy', function(data){
     db.hdel(data.room, data.id);
-    socket.emit('remove', {id: data.id});
+    socket.broadcast.emit('remove', {id: data.id});
   });
 
 });

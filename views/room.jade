@@ -2,24 +2,26 @@ extends layout
 
 block content
   script(src='/javascripts/fun.js')
-  script(src='/siofu/client.js')
   body
     #zone
     #navbar
       ul
-        li#baritem upload an image:
-        li#baritem
-          label Upload File:
-          input(type="file" id="file_input")
-          //- form(method="POST" action="/file-upload" enctype="multipart/form-data")
-          //-   input(type="file" name="file")
-          //-   input(type="submit" value="submit")
-        li#baritem
+        li.baritem upload an image:
+        li.baritem
+          //- input(type="file" id="file_input")
+          form(method="POST" action="/file-upload" enctype="multipart/form-data")
+            input(type="file" name="file")
+            input(type="submit" value="submit")
+        li.baritem
           #imgzone add img from url:
-            input#imgInput(type="text" name="url" placeholder="paste a url")
+            input#imgInput(type="text" name="url" placeholder="paste a url" autocomplete="off")
             button#imgbutton submit 
-        li#baritem change the background:
-        li#baritem
+        li.baritem change the background:
+        li.baritem
           #bgzone
-            input#bgInput(type="text" name="url" placeholder="paste a url")
+            input#bgInput(type="text" name="url" placeholder="paste a url" autocomplete="off")
             button#bgbutton submit 
+        li.baritem
+          a(href="https://twitter.com/share" class="twitter-share-button" data-text="i been had collages. check out my garden at" data-related="forrestalmasi") Tweet
+          script
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
