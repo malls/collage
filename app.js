@@ -45,11 +45,11 @@ var s3 = knox.createClient({
 });
 
 db.select(0);
-db.set("undefined", "redis connected", function(){
-  db.get("undefined", function(err, response){
+db.set("sdf", "redis connected", function(){
+  db.get("sdf", function(err, response){
     console.log(response);
   });  
-  db.del("undefined");
+  db.del("sdf");
 });
 db.on("error", function(err){
 	console.log("Error: " + err);
