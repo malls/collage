@@ -12,7 +12,7 @@ var socket = io.connect(document.location.host);
 
 // var clearBg = function(){
 //   document.body.style.background = "";
-// };
+// };  
 
 var loadIndex = function(){
   var roomlist = document.getElementById('roomlist');
