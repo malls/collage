@@ -112,11 +112,11 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('stopdrag', function(data){
-    console.log(data.room,"is my room on stopdrag");
     db.hset(data.room, data.id, JSON.stringify(data));
   });
 
   socket.on('disconnect', function(){
+    console.log('a user disconnected. database saved');
     db.bgsave();
   });
 
@@ -125,7 +125,6 @@ io.sockets.on('connection', function (socket) {
     dataString = JSON.stringify(data);
     socket.broadcast.emit('newimage', {url: data.url, id: imgid});
     socket.emit('newimage', {url: data.url, id: imgid});
-    db.hset(data.room, data.imgid, dataString);
   });
 
   socket.on('bg', function(data){

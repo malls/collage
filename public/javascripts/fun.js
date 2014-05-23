@@ -12,10 +12,13 @@
           Ω(e).destroy();
         }
       })
+      .draggable()
       .on('dragend', function(){
         socket.emit('stopdrag', {position: this.style.cssText, id: this.id, url: this.src, room: room});
       })
-      .draggable()
+      .on('dragstart', function(e){
+        e.dataTransfer.setDragImage(this, -9999999999, -999999999);
+      })
       .drag(function(e){
         var position = e.toElement.style.cssText;
         var id = e.toElement.id;
