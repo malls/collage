@@ -16,7 +16,9 @@
 			if(selector === undefined){
 				this.obj = document;
 			}else{
-				if( selector === document ){
+				if( selector.toElement ){
+					this.obj = selector.toElement;
+				}else if( selector === document ){
 					this.obj = document;
 				}else if( selector === window ){
 					this.obj = window;

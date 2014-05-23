@@ -2,6 +2,7 @@ var index = require('./controllers/index');
 var room = require('./controllers/room');
 var express = require('express');
 var crypto = require('crypto');
+var dotenv = require('dotenv');
 var redis = require('redis');
 var http = require('http');
 var path = require('path');
@@ -10,7 +11,6 @@ var url = require('url');
 var app = express();
 var port = process.env.PORT || 3000;
 var io = require('socket.io').listen(app.listen(port));
-var dotenv = require('dotenv');
 dotenv.load();
 
 // all environments
@@ -45,11 +45,11 @@ var s3 = knox.createClient({
 });
 
 db.select(0);
-db.set("fdasf", "redis connected", function(){
-  db.get("fdasf", function(err, response){
+db.set("undefined", "redis connected", function(){
+  db.get("undefined", function(err, response){
     console.log(response);
   });  
-  db.del("fdasf");
+  db.del("undefined");
 });
 db.on("error", function(err){
 	console.log("Error: " + err);
@@ -112,6 +112,7 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('stopdrag', function(data){
+    console.log(data.room,"is my room on stopdrag");
     db.hset(data.room, data.id, JSON.stringify(data));
   });
 
@@ -121,10 +122,10 @@ io.sockets.on('connection', function (socket) {
 
   socket.on('getId', function(data){
     var imgid = crypto.randomBytes(5).toString('hex');
-    urlString = JSON.stringify({url: data.url});
+    dataString = JSON.stringify(data);
     socket.broadcast.emit('newimage', {url: data.url, id: imgid});
     socket.emit('newimage', {url: data.url, id: imgid});
-    db.hset(data.room, data.imgid, urlString);
+    db.hset(data.room, data.imgid, dataString);
   });
 
   socket.on('bg', function(data){
