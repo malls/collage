@@ -20,6 +20,11 @@ img {
   max-width: auto;
 }
 
+#zone{
+  border: 1px solid red;
+  min-height: 100%;
+}
+
 #navbar {
   width: 100%;
   position: fixed;
@@ -29,6 +34,7 @@ img {
   color: white;
   background-color: black;
   height: 27px;
+  border: 1px solid yellow;
 }
 
 ul {

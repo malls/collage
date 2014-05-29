@@ -1,3 +1,4 @@
+var SocketIOFileUploadServer = require("socketio-file-upload");
 var index = require('./controllers/index');
 var room = require('./controllers/room');
 var express = require('express');
@@ -14,21 +15,23 @@ var io = require('socket.io').listen(app.listen(port));
 dotenv.load();
 
 // all environments
-app.set('port', process.env.PORT || 3000);
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-app.use(express.logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded());
-app.use(express.methodOverride());
-app.use(express.multipart({ defer: true }));
-app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
-app.all('*', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  next();
- });
+app
+  .set('port', process.env.PORT || 3000)
+  .set('views', path.join(__dirname, 'views'))
+  .set('view engine', 'jade')
+  .use(express.logger('dev'))
+  .use(express.json())
+  .use(express.urlencoded())
+  .use(express.methodOverride())
+  .use(express.multipart({ defer: true }))
+  .use(app.router)
+  .use(SocketIOFileUploadServer.router)
+  .use(express.static(path.join(__dirname, 'public')))
+  .all('*', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+  });
 
 if(process.env.MODE === 'development'){
   var db = redis.createClient(6379);
@@ -52,37 +55,36 @@ db.set("sdf", "redis connected", function(){
   db.del("sdf");
 });
 db.on("error", function(err){
-	console.log("Error: " + err);
+  console.log("Error: " + err);
 });
 
 //routes - move elsewhere
-app.get('/', index.show);
-app.get('/stylesheets/*', function(req,res){
-	res.sendfile("public" + req.url);
-});
-app.get('/javascripts/*', function(req,res){
-	res.sendfile("public" + req.url);
-});
-app.get('/images/*', function(req,res){
-	res.sendfile("public" + req.url);
-});
-app.use(express.multipart({ defer: true }));
-app.get('/:room', room.load);
-
-app.post('/file-upload', function (req, res) {
-  var headers = {
-    'x-amz-acl': 'public-read',
-    'Access-Control-Allow-Origin': '*'
-  };
-  req.form.on('part', function (part) {
-    headers['Content-Length'] = part.byteCount;
-    s3.putStream(part, part.filename, headers, function (err, s3res) {
-      if (err) {
-        return res.send(500, err);
-      }
-      var imgid = crypto.randomBytes(5).toString('hex');
-      asocket.emit('newimage', {url: s3res.client._httpMessage.url, id: imgid});
-    });
+app
+  .get('/', index.show)
+  .get('/stylesheets/*', function(req,res){
+    res.sendfile("public" + req.url);
+  })
+  .get('/javascripts/*', function(req,res){
+    res.sendfile("public" + req.url);
+  })
+  .get('/images/*', function(req,res){
+    res.sendfile("public" + req.url);
+  })
+  .get('/:room', room.load)
+  .post('/file-upload', function (req, res) {
+    var headers = {
+      'x-amz-acl': 'public-read',
+      'Access-Control-Allow-Origin': '*'
+    };
+    req.form.on('part', function (part) {
+      headers['Content-Length'] = part.byteCount;
+      s3.putStream(part, part.filename, headers, function (err, s3res) {
+        if (err) {
+          return res.send(500, err);
+        }
+        var imgid = crypto.randomBytes(5).toString('hex');
+        asocket.emit('newimage', {url: s3res.client._httpMessage.url, id: imgid});
+      });
   });
 });
 
@@ -92,6 +94,17 @@ var asocket;
 io.sockets.on('connection', function (socket) {
 
   asocket = socket;
+
+  var uploader = new SocketIOFileUploadServer();
+  uploader.listen(socket);
+
+  uploader.on('saved', function(event){
+    console.log(event.file);
+  });
+
+  uploader.on('error', function(event){
+    console.log("Error from uploader", event);
+  });
 
   //index
   socket.on('ask', function(){
@@ -137,5 +150,7 @@ io.sockets.on('connection', function (socket) {
     db.hdel(data.room, data.id);
     socket.broadcast.emit('remove', {id: data.id});
   });
+
+
 
 });

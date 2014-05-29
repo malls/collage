@@ -15,7 +15,7 @@
     "hiredis": "latest",
     "requirejs": "latest",
     "url": "latest",
-    "socketio-file-upload": "latest"
+    "socketio-file-upload": "^0.2.7"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

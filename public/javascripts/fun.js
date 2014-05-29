@@ -3,7 +3,6 @@
   
   var socket = io.connect(document.location.host);
   var room = window.location.pathname.substr(1);
-
   var everyImageNeedsThese = function(){
     img()
       .on('click', function(e){
@@ -23,6 +22,12 @@
         socket.emit('send', {position: position, id: id});
     });
   };
+
+  var instance = new SocketIOFileUpload(socket);
+
+  console.log(instance);
+
+  instance.listenOnDrop(document.body);
 
   socket.emit('setme', room);
 
