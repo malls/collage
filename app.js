@@ -34,13 +34,13 @@ app
     next();
   });
 
-// if (process.env.MODE === 'development') {
-//   var db = redis.createClient(6379);
-// } else {
+if (process.env.MODE === 'development') {
+  var db = redis.createClient(6379);
+} else {
   var redisURL = url.parse(process.env.REDISCLOUD_URL);
   var db = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
   db.auth(redisURL.auth.split(":")[1]);
-// }
+}
 
 db.select(0);
 db.set("sdf", "redis connected", function () {
