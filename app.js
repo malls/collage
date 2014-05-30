@@ -131,7 +131,7 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('getId', function (data) {
-    var imgid = crypto.randomBytes(5).toString('hex');
+    var imgid = "l" + crypto.randomBytes(5).toString('hex');
     dataString = JSON.stringify(data);
     socket.broadcast.emit('newimage', {url: data.url, id: imgid});
     socket.emit('newimage', {url: data.url, id: imgid});
