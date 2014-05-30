@@ -42,12 +42,6 @@ if(process.env.MODE === 'development'){
   db.auth(redisURL.auth.split(":")[1]);
 }
 
-var s3 = knox.createClient({
-    key: process.env.AS3_ACCESS_KEY,
-    secret: process.env.AS3_SECRET_ACCESS_KEY,
-    bucket: process.env.AS3_BUCKET,
-});
-
 db.select(0);
 db.set("sdf", "redis connected", function(){
   db.get("sdf", function(err, response){
@@ -57,6 +51,12 @@ db.set("sdf", "redis connected", function(){
 });
 db.on("error", function(err){
   console.log("Error: " + err);
+});
+
+var s3 = knox.createClient({
+    key: process.env.AS3_ACCESS_KEY,
+    secret: process.env.AS3_SECRET_ACCESS_KEY,
+    bucket: process.env.AS3_BUCKET,
 });
 
 //routes - move elsewhere
@@ -80,9 +80,10 @@ app
   });
 });
 
-//socket stuff
+//for post requests
 var asocket;
 
+//socket stuff
 io.sockets.on('connection', function (socket) {
 
   asocket = socket;
@@ -96,7 +97,7 @@ io.sockets.on('connection', function (socket) {
   uploader.on('saved', function(event){
     console.log(event.file.pathName.substr(6),"event.file.pathname smaller");
     var imgid = crypto.randomBytes(5).toString('hex');
-    asocket.emit('newimage', {url: event.file.pathName.substr(6), id: imgid});
+    socket.emit('newimage', {url: event.file.pathName.substr(6), id: imgid});
   });
 
   uploader.on('error', function(event){
