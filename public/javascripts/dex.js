@@ -14,11 +14,11 @@ var socket = io.connect(document.location.host);
 //   document.body.style.background = "";
 // };  
 
-var loadIndex = function(){
+var loadIndex = function () {
   var roomlist = document.getElementById('roomlist');
   socket.emit('ask');
-  socket.on('getrooms', function(data){
-    for(var i = 0; i < data.length; i++){
+  socket.on('getrooms', function (data) {
+    for (var i = 0; i < data.length; i++) {
       var listitem = document.createElement('li');
       var linkitem = document.createElement('a');
       linkitem.href = "/" + data[i];
@@ -33,7 +33,7 @@ var loadIndex = function(){
   });
 };
 
-var garden = function(e){
+var garden = function (e) {
   e.preventDefault();
   window.location = document.location.origin + "/" + document.getElementsByTagName('input')[0].value;
   return false;
