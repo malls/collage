@@ -17,7 +17,6 @@
         socket.emit('stopdrag', {position: this.style.cssText, id: this.id, url: this.src, room: room});
       })
       .drag(function(e){
-        // console.log(e.currentTarget.style.cssText,"css");
         var position = e.currentTarget.style.cssText;
         var id = e.currentTarget.id;
         socket.emit('send', {position: position, id: id});
@@ -55,10 +54,10 @@
   });
 
   socket.on('move', function (data) {
-    var newImg = document.createElement('img');
-    newImg.src = data.url;
-    newImg.id = data.id;
     if(!document.getElementById(data.id)){
+      var newImg = document.createElement('img');
+      newImg.src = data.url;
+      newImg.id = data.id;
       document.getElementById('zone').appendChild(newImg);
     }
     document.getElementById(data.id).style.cssText = data.position;
