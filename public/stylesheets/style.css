@@ -5,6 +5,7 @@ html {
 body {
   padding: 0;
   margin: 0;
+  background-position: center top;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   min-width: 100%;
   min-height: 100%;
