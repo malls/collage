@@ -23,11 +23,14 @@
     });
   };
 
-  var instance = new SocketIOFileUpload(socket);
+  var siofu = new SocketIOFileUpload(socket);
 
-  console.log(instance);
+  siofu.listenOnDrop(document.body);
 
-  instance.listenOnDrop(document.body);
+  siofu.addEventListener("complete", function(event){
+      console.log(event.success);
+      console.log(event.file);  
+  });
 
   socket.emit('setme', room);
 

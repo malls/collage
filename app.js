@@ -1,17 +1,18 @@
-var SocketIOFileUploadServer = require("socketio-file-upload");
-var index = require('./controllers/index');
-var room = require('./controllers/room');
-var express = require('express');
-var crypto = require('crypto');
-var dotenv = require('dotenv');
-var redis = require('redis');
-var http = require('http');
-var path = require('path');
-var knox = require('knox');
-var url = require('url');
-var app = express();
-var port = process.env.PORT || 3000;
-var io = require('socket.io').listen(app.listen(port));
+var SocketIOFileUploadServer = require("socketio-file-upload"),
+  index = require('./controllers/index'),
+  room = require('./controllers/room'),
+  express = require('express'),
+  crypto = require('crypto'),
+  dotenv = require('dotenv'),
+  redis = require('redis'),
+  http = require('http'),
+  path = require('path'),
+  knox = require('knox'),
+  url = require('url'),
+  app = express(),
+  port = process.env.PORT || 3000,
+  io = require('socket.io').listen(app.listen(port));
+
 dotenv.load();
 
 // all environments
@@ -61,15 +62,6 @@ db.on("error", function(err){
 //routes - move elsewhere
 app
   .get('/', index.show)
-  .get('/stylesheets/*', function(req,res){
-    res.sendfile("public" + req.url);
-  })
-  .get('/javascripts/*', function(req,res){
-    res.sendfile("public" + req.url);
-  })
-  .get('/images/*', function(req,res){
-    res.sendfile("public" + req.url);
-  })
   .get('/:room', room.load)
   .post('/file-upload', function (req, res) {
     var headers = {
@@ -95,11 +87,16 @@ io.sockets.on('connection', function (socket) {
 
   asocket = socket;
 
+  // upload stuff
   var uploader = new SocketIOFileUploadServer();
   uploader.listen(socket);
 
+  uploader.dir = "./public/images"
+
   uploader.on('saved', function(event){
-    console.log(event.file);
+    console.log(event.file.pathName.substr(6),"event.file.pathname smaller");
+    var imgid = crypto.randomBytes(5).toString('hex');
+    asocket.emit('newimage', {url: event.file.pathName.substr(6), id: imgid});
   });
 
   uploader.on('error', function(event){
@@ -150,7 +147,5 @@ io.sockets.on('connection', function (socket) {
     db.hdel(data.room, data.id);
     socket.broadcast.emit('remove', {id: data.id});
   });
-
-
 
 });
