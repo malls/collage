@@ -28,13 +28,13 @@ app
   .use(app.router)
   .use(SocketIOFileUploadServer.router)
   .use(express.static(path.join(__dirname, 'public')))
-  .all('*', function(req, res, next) {
+  .all('*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     next();
   });
 
-if(process.env.MODE === 'development'){
+if (process.env.MODE === 'development') {
   var db = redis.createClient(6379);
 } else {
   var redisURL = url.parse(process.env.REDISCLOUD_URL);
@@ -43,13 +43,13 @@ if(process.env.MODE === 'development'){
 }
 
 db.select(0);
-db.set("sdf", "redis connected", function(){
-  db.get("sdf", function(err, response){
+db.set("sdf", "redis connected", function () {
+  db.get("sdf", function (err, response) {
     console.log(response);
-  });  
+  });
   db.del("sdf");
 });
-db.on("error", function(err){
+db.on("error", function (err) {
   console.log("Error: " + err);
 });
 
@@ -92,28 +92,27 @@ io.sockets.on('connection', function (socket) {
   var uploader = new SocketIOFileUploadServer();
   uploader.listen(socket);
 
-  uploader.dir = "./public/images"
+  uploader.dir = "./public/images";
 
-  uploader.on('saved', function(event){
-    console.log(event.file.pathName.substr(6),"event.file.pathname smaller");
+  uploader.on('saved', function (event) {
     var imgid = crypto.randomBytes(5).toString('hex');
     socket.emit('newimage', {url: event.file.pathName.substr(6), id: imgid});
   });
 
-  uploader.on('error', function(event){
+  uploader.on('error', function (event) {
     console.log("Error from uploader", event);
   });
 
   //index
-  socket.on('ask', function(){
-    db.keys('*', function(err, reply){
+  socket.on('ask', function () {
+    db.keys('*', function (err, reply) {
       socket.emit('getrooms', reply);
     });
   });
 
   //rooms
-	socket.on('setme', function(data){
-		db.hgetall(data, function(err, reply){
+	socket.on('setme', function (data) {
+		db.hgetall(data, function (err, reply) {
 			socket.emit('set', reply);
 		});
 	});
@@ -122,29 +121,29 @@ io.sockets.on('connection', function (socket) {
     socket.broadcast.emit('move', data);
   });
 
-  socket.on('stopdrag', function(data){
+  socket.on('stopdrag', function (data) {
     db.hset(data.room, data.id, JSON.stringify(data));
   });
 
-  socket.on('disconnect', function(){
+  socket.on('disconnect', function () {
     console.log('a user disconnected. database saved');
     db.bgsave();
   });
 
-  socket.on('getId', function(data){
+  socket.on('getId', function (data) {
     var imgid = crypto.randomBytes(5).toString('hex');
     dataString = JSON.stringify(data);
     socket.broadcast.emit('newimage', {url: data.url, id: imgid});
     socket.emit('newimage', {url: data.url, id: imgid});
   });
 
-  socket.on('bg', function(data){
+  socket.on('bg', function (data) {
     console.log(data);
     socket.broadcast.emit('set', {background: data.background});
     db.hset(data.room, 'background', data.background);
   });
 
-  socket.on('destroy', function(data){
+  socket.on('destroy', function (data) {
     db.hdel(data.room, data.id);
     socket.broadcast.emit('remove', {id: data.id});
   });
