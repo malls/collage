@@ -3,6 +3,7 @@
   
   var socket = io.connect(document.location.host);
   var room = window.location.pathname.substr(1);
+  
   var everyImageNeedsThese = function(){
     img()
       .on('click', function(e){
@@ -24,9 +25,7 @@
   };
 
   var siofu = new SocketIOFileUpload(socket);
-
   siofu.listenOnDrop(document.body);
-
   siofu.addEventListener("complete", function(event){
       console.log(event.success);
   });

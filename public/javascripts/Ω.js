@@ -130,7 +130,9 @@
 			return _Ω;
 		},
 		
-		draggable: function(){
+		draggable: function(position){
+
+			//to do: add window mouse coordinates for firefox
 
 			var _draggable = function(x){
 				x.draggable = true;
@@ -138,55 +140,37 @@
 				var oldStart = x.ondragstart;
 				var oldDrag = x.ondrag;
 				var oldOver = x.ondragover;
-				var oldDocDrag = document.ondragover;
 				var offset = {x: 0, y: 0};
-				var xPos = x.x;
-				var yPos = x.y;
-
-				if(oldDocDrag){
-					document.ondragover = function (e){
-						xPos = e.pageX - offset.x;
-						yPos = e.pageY - offset.y;
-						oldDocDrag(e);
-					};
-				} else {
-					document.ondragover = function (e){
-						xPos = e.pageX - offset.x;
-						yPos = e.pageY - offset.y;
-					};
-				}
 
 				if(oldStart){
 					x.ondragstart = function(e){
-						console.log(x.offsetLeft,"offset");
 						e.dataTransfer.setDragImage(x, -9999999999, -999999999);
-						offset.x = xPos - x.offsetLeft;
-						offset.y = yPos - x.offsetTop;
+						offset.x = e.clientX - x.offsetLeft;
+						offset.y = e.clientY - x.offsetTop;
 						oldStart(e);
 					};
 				} else {
 					x.ondragstart = function(e){
-						console.log(x.offsetLeft,"offset");
 						e.dataTransfer.setDragImage(x, -9999999999, -999999999);
-						offset.x = xPos - x.offsetLeft;
-						offset.y = yPos - x.offsetTop;
+						offset.x = e.clientX - x.offsetLeft;
+						offset.y = e.clientY - x.offsetTop;
 					};
 				}
 
 				if(oldDrag){
 					x.ondrag = function(e){
-						x.style.left = xPos + "px";
-						x.style.top = yPos + "px";
+						var xpos = e.pageX;
+						var ypos = e.pageY;
+						x.style.left = Math.ceil(xpos) + "px";
+						x.style.top = Math.ceil(ypos) + "px";
 						oldDrag(e);
-						x.ondragover = function(e){
-							e.preventDefault();
-						};
 					};
 				} else {
-					x.ondrag = function(){
-						x.style.left = xPos + "px";
-						x.style.top = yPos + "px";
-						console.log(offset);
+					x.ondrag = function(e){
+						var xpos = e.pageX - offset.x;
+						var ypos = e.pageY - offset.y;
+						x.style.left = Math.ceil(xpos) + "px";
+						x.style.top = Math.ceil(ypos) + "px";
 					};
 				}
 
