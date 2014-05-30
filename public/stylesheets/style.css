@@ -21,7 +21,6 @@ img {
 }
 
 #zone{
-  border: 1px solid red;
   min-height: 1000px;
 }
 
@@ -34,7 +33,6 @@ img {
   color: white;
   background-color: black;
   height: 27px;
-  border: 1px solid yellow;
 }
 
 ul {

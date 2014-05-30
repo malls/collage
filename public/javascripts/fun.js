@@ -17,8 +17,9 @@
         socket.emit('stopdrag', {position: this.style.cssText, id: this.id, url: this.src, room: room});
       })
       .drag(function(e){
-        var position = e.toElement.style.cssText;
-        var id = e.toElement.id;
+        // console.log(e.currentTarget.style.cssText,"css");
+        var position = e.currentTarget.style.cssText;
+        var id = e.currentTarget.id;
         socket.emit('send', {position: position, id: id});
     });
   };
@@ -29,7 +30,6 @@
 
   siofu.addEventListener("complete", function(event){
       console.log(event.success);
-      console.log(event.file);  
   });
 
   socket.emit('setme', room);

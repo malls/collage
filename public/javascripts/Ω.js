@@ -16,8 +16,8 @@
 			if(selector === undefined){
 				this.obj = document;
 			}else{
-				if( selector.toElement ){
-					this.obj = selector.toElement;
+				if( selector.currentTarget ){
+					this.obj = selector.currentTarget;
 				}else if( selector === document ){
 					this.obj = document;
 				}else if( selector === window ){
@@ -130,7 +130,7 @@
 			return _Ω;
 		},
 		
-		draggable: function(position){
+		draggable: function(){
 
 			var _draggable = function(x){
 				x.draggable = true;
@@ -138,27 +138,49 @@
 				var oldStart = x.ondragstart;
 				var oldDrag = x.ondrag;
 				var oldOver = x.ondragover;
+				var oldDocDrag = document.ondragover;
 				var offset = {x: 0, y: 0};
+				var xPos;
+				var yPos;
+
+				if(oldDocDrag){
+					document.ondragover = function (e){
+						var evt = e || window.event;
+						xPos = evt.pageX;
+						yPos = evt.pageY;
+						console.log(xPos,"xpos");
+						console.log(yPos,"ypos");
+
+						oldDocDrag(e);
+					};
+				} else {
+					document.ondragover = function (e){
+						event = e || window.event;
+						xPos = event.pageX;
+						yPos = event.pageY;
+						oldDocDrag(e);
+					};
+				}
 
 				if(oldStart){
 					x.ondragstart = function(e){
 						e.dataTransfer.setDragImage(x, -9999999999, -999999999);
-						offset.x = e.x - x.offsetLeft;
-						offset.y = e.y - x.offsetTop;
+						offset.x = xPos - x.offsetLeft;
+						offset.y = yPos - x.offsetTop;
 						oldStart(e);
 					};
 				} else {
 					x.ondragstart = function(e){
 						e.dataTransfer.setDragImage(x, -9999999999, -999999999);
-						offset.x = e.x - x.offsetLeft;
-						offset.y = e.y - x.offsetTop;
+						offset.x = xPos - x.offsetLeft;
+						offset.y = yPos - x.offsetTop;
 					};
 				}
 
 				if(oldDrag){
 					x.ondrag = function(e){
-						var xpos = e.x;
-						var ypos = e.y;
+						var xpos = xPos;
+						var ypos = yPos;
 						x.style.left = Math.ceil(xpos) + "px";
 						x.style.top = Math.ceil(ypos) + "px";
 						oldDrag(e);
@@ -168,8 +190,10 @@
 					};
 				} else {
 					x.ondrag = function(e){
-						var xpos = e.x - offset.x;
-						var ypos = e.y - offset.y;
+						console.log(e.screenX,"xPos");
+						console.log(yPos,"yPos");
+						var xpos = xPos - offset.x;
+						var ypos = yPos - offset.y;
 						x.style.left = Math.ceil(xpos) + "px";
 						x.style.top = Math.ceil(ypos) + "px";
 					};
