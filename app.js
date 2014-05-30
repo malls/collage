@@ -43,11 +43,11 @@ if (process.env.MODE === 'development') {
 }
 
 db.select(0);
-db.set("sdf", "redis connected", function () {
-  db.get("sdf", function (err, response) {
+db.set("donny", "redis connected", function () {
+  db.get("donny", function (err, response) {
     console.log(response);
   });
-  db.del("sdf");
+  db.del("donny");
 });
 db.on("error", function (err) {
   console.log("Error: " + err);

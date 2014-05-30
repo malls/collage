@@ -4,11 +4,11 @@
   var socket = io.connect(document.location.host);
   var room = window.location.pathname.substr(1);
   
-  var everyImageNeedsThese = function(){
-    img()
+  var everyImageNeedsThese = function (id) {
+    Ω(id)
       .on('click', function(e){
         Ω(e).zup();
-        if(e.shiftKey){
+        if (e.shiftKey) {
           socket.emit('destroy', {id: this.id, room: room});
           Ω(e).destroy();
         }
@@ -26,29 +26,27 @@
 
   var siofu = new SocketIOFileUpload(socket);
   siofu.listenOnDrop(document.body);
-  siofu.addEventListener("complete", function(event){
+  siofu.addEventListener("complete", function(event) {
       console.log(event.success);
   });
 
   socket.emit('setme', room);
 
-  socket.on('set', function(data){
-    if (data){
-      if(data.background){
+  socket.on('set', function (data) {
+    if (data) {
+      if (data.background) {
         document.body.style.background = data.background;
         delete data.background;
       }
-      Object.keys(data).forEach(function(key){
+      Object.keys(data).forEach(function (key) {
         var values = JSON.parse(data[key]);
         var img = document.createElement("img");
         img.id = key;
         img.src = values.url;
         img.style.cssText = values.position;
         Ω('#zone').append(img);  
+        everyImageNeedsThese("#" + img.id)
       });
-      if(document.images.length){
-        everyImageNeedsThese();
-      }
     }
   });
 
@@ -67,7 +65,7 @@
     newImg.src = data.url;
     newImg.id = data.id;
     document.getElementById('zone').appendChild(newImg);
-    everyImageNeedsThese();
+    everyImageNeedsThese("#" + newImg.id);
   });
 
   socket.on('remove', function(data){
