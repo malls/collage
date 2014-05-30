@@ -8,7 +8,7 @@
   "dependencies": {
     "express": "3.4.8",
     "jade": "*",
-    "socket.io": "latest",
+    "socket.io": "0.9.14",
     "knox": "latest",
     "dotenv": "latest",
     "redis": "latest",
