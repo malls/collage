@@ -74,7 +74,7 @@ app
         if (err) {
           return res.send(500, err);
         }
-        var imgid = "a" + crypto.randomBytes(5).toString('hex');
+        var imgid = "A" + crypto.randomBytes(5).toString('hex');
         asocket.emit('newimage', {url: s3res.client._httpMessage.url, id: imgid});
       });
   });
@@ -95,7 +95,7 @@ io.sockets.on('connection', function (socket) {
   uploader.dir = "./public/images";
 
   uploader.on('saved', function (event) {
-    var imgid = "u" + crypto.randomBytes(5).toString('hex');
+    var imgid = "U" + crypto.randomBytes(5).toString('hex');
     socket.emit('newimage', {url: event.file.pathName.substr(6), id: imgid});
   });
 
@@ -131,7 +131,7 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('getId', function (data) {
-    var imgid = "l" + crypto.randomBytes(5).toString('hex');
+    var imgid = "L" + crypto.randomBytes(5).toString('hex');
     dataString = JSON.stringify(data);
     socket.broadcast.emit('newimage', {url: data.url, id: imgid});
     socket.emit('newimage', {url: data.url, id: imgid});
