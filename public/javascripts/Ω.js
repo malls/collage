@@ -129,10 +129,8 @@
 			this.loop(_setBg);
 			return _Ω;
 		},
-		
-		draggable: function(position){
 
-			//to do: add window mouse coordinates for firefox
+		draggable: function(position){
 
 			var _draggable = function(x){
 				x.draggable = true;
@@ -140,7 +138,19 @@
 				var oldStart = x.ondragstart;
 				var oldDrag = x.ondrag;
 				var oldOver = x.ondragover;
+				var oldDrop = x.ondrop;
 				var offset = {x: 0, y: 0};
+
+				var firefox = !(window.mozInnerScreenX == null);
+				var mozX;
+				var mozY;
+
+				if(firefox){
+					document.ondragover = function(e){
+						mozX = e.screenX;
+						mozY = e.screenY;
+					};
+				}
 
 				if(oldStart){
 					x.ondragstart = function(e){
@@ -159,16 +169,26 @@
 
 				if(oldDrag){
 					x.ondrag = function(e){
-						var xpos = e.pageX;
-						var ypos = e.pageY;
+						if (firefox){
+							var xpos = mozX - offset.x;
+							var ypos = mozY - offset.y;
+						} else {
+					 		var xpos = e.pageX - offset.x;
+					 		var ypos = e.pageY - offset.y;
+						}
 						x.style.left = Math.ceil(xpos) + "px";
 						x.style.top = Math.ceil(ypos) + "px";
 						oldDrag(e);
 					};
 				} else {
 					x.ondrag = function(e){
-						var xpos = e.pageX - offset.x;
-						var ypos = e.pageY - offset.y;
+						if (firefox){
+							var xpos = mozX - offset.x;
+							var ypos = mozY - offset.y;
+						} else {
+					 		var xpos = e.pageX - offset.x;
+					 		var ypos = e.pageY - offset.y;
+						}
 						x.style.left = Math.ceil(xpos) + "px";
 						x.style.top = Math.ceil(ypos) + "px";
 					};
@@ -186,8 +206,21 @@
 						return false;
 					};
 				}
-
+				
+				if(oldDrop){
+					x.ondrop = function(e){
+						e.preventDefault();
+						oldDrop(e);
+						return false;
+					};
+				} else {
+					x.ondrop = function(e){
+						e.preventDefault();
+						return false;
+					};
+				}
 			};
+
 			this.loop(_draggable);
 			return _Ω;
 		},
@@ -214,7 +247,7 @@
 					x.style.display = "none";
 				}else{
 					x.style.display = "";
-				}	
+				}
 			};
 			this.loop(_toggle);
 			return _Ω;
@@ -288,12 +321,12 @@
 					x.style.filter = "FlipH";
 					x.style.msFilter = "FlipH";
 				} else {
-					x.style.transform = 
-					x.style.mozTransform = 
-					x.style.oTransform = 
-					x.style.webkitTransform = 
-					x.style.transform = 
-					x.style.filter = 
+					x.style.transform =
+					x.style.mozTransform =
+					x.style.oTransform =
+					x.style.webkitTransform =
+					x.style.transform =
+					x.style.filter =
 					x.style.msFilter = "";
 				}
 			};
@@ -365,7 +398,8 @@
 				canv.putImageData(data, 0, 0);
 				var dataURL = can.toDataURL();
 				x.src = dataURL;
-				can.parentNode.removeChild(can);		
+				can.parentNode.removeChild(can);
+
 			};
 			this.loop(_noBlack);
 			return _Ω;
@@ -445,7 +479,7 @@
 	};
 	window.img = function(){
 		return Ω('img');
-	};	
+	};
 	window.li = function(){
 		return Ω('li');
 	};
