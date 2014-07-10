@@ -16,9 +16,20 @@ form {
   width: 100%;
 }
 
+iframe {
+  padding-top: 6px;
+  padding-bottom: 4px;
+  position: absolute;
+  bottom: 0;
+}
+
 img {
   max-height: 200px;
   max-width: auto;
+}
+
+ul {
+  margin: 1px 1px 1px 1px;
 }
 
 #zone{
@@ -37,18 +48,7 @@ img {
   z-index: 999999999999999999999999999999999;
 }
 
-ul {
-  margin: 1px 1px 1px 1px;
-}
-
 .baritem {
   display: inline-block;
   padding-right: 10px;
-}
-
-iframe {
-  padding-top: 6px;
-  padding-bottom: 4px;
-  position: absolute;
-  bottom: 0;
 }

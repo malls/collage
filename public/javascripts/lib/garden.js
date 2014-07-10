@@ -1,5 +1,7 @@
-(function () {
+(function garden() {
     'use strict';
+
+    var exports;
 
     function prettyString(str) {
         if (str.indexOf('%20') >= 0) {
@@ -10,7 +12,7 @@
         }
     }
 
-    var exports = {
+    exports = {
         prettyString: prettyString
     };
 
