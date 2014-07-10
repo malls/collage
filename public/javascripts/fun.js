@@ -1,4 +1,4 @@
-Ω().ready(function(){
+Ω().ready(function () {
   "use strict";
   
   var socket = io.connect(document.location.host);
@@ -6,18 +6,18 @@
   
   var everyImageNeedsThese = function (id) {
     Ω(id)
-      .on('click', function(e){
+      .on('click', function (e) {
         Ω(e).zup();
         if (e.shiftKey) {
-          socket.emit('destroy', {id: this.id, room: room});
+          socket.emit('destroy', {id: e.currentTarget.id, room: room});
           Ω(e).destroy();
         }
       })
       .draggable()
-      .on('dragend', function(){
+      .on('dragend', function () {
         socket.emit('stopdrag', {position: this.style.cssText, id: this.id, url: this.src, room: room});
       })
-      .drag(function(e){
+      .drag(function (e) {
         var position = e.currentTarget.style.cssText;
         var id = e.currentTarget.id;
         socket.emit('send', {position: position, id: id});
@@ -26,7 +26,7 @@
 
   var siofu = new SocketIOFileUpload(socket);
   siofu.listenOnDrop(document.body);
-  siofu.addEventListener("complete", function(event) {
+  siofu.addEventListener("complete", function (event) {
       console.log(event.success);
   });
 
@@ -44,14 +44,14 @@
         img.id = key;
         img.src = values.url;
         img.style.cssText = values.position;
-        Ω('#zone').append(img);  
-        everyImageNeedsThese("#" + img.id)
+        Ω('#zone').append(img);
+        everyImageNeedsThese("#" + img.id);
       });
     }
   });
 
   socket.on('move', function (data) {
-    if(!document.getElementById(data.id)){
+    if (!document.getElementById(data.id)) {
       var newImg = document.createElement('img');
       newImg.src = data.url;
       newImg.id = data.id;
@@ -60,7 +60,7 @@
     document.getElementById(data.id).style.cssText = data.position;
   });
 
-  socket.on('newimage', function(data){
+  socket.on('newimage', function (data) {
     var newImg = document.createElement('img');
     newImg.src = data.url;
     newImg.id = data.id;
@@ -68,18 +68,18 @@
     everyImageNeedsThese("#" + newImg.id);
   });
 
-  socket.on('remove', function(data){
+  socket.on('remove', function (data) {
     Ω("#" + data.id).destroy();
   });
 
-  Ω('#imgbutton').click(function(e){
+  Ω('#imgbutton').click(function (e) {
     e.preventDefault();
     var imgValue = document.getElementById('imgInput').value;
     document.getElementById('imgInput').value = "";
     socket.emit('getId', {room: room, url: imgValue});
   });
 
-  Ω('#bgbutton').click(function(e){
+  Ω('#bgbutton').click(function (e) {
     e.preventDefault();
     var bgValue = document.getElementById('bgInput').value;
     document.getElementById('bgInput').value = "";
