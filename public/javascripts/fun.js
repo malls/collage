@@ -1,10 +1,10 @@
 Ω().ready(function () {
-  "use strict";
+  'use strict';
   
   var socket = io.connect(document.location.host);
   var room = window.location.pathname.substr(1);
   
-  var everyImageNeedsThese = function (id) {
+  function everyImageNeedsThese(id) {
     Ω(id)
       .on('click', function (e) {
         Ω(e).zup();
@@ -22,11 +22,11 @@
         var id = e.currentTarget.id;
         socket.emit('send', {position: position, id: id});
     });
-  };
-
-  var siofu = new SocketIOFileUpload(socket);
+  }
+ 
+ var siofu = new SocketIOFileUpload(socket);
   siofu.listenOnDrop(document.body);
-  siofu.addEventListener("complete", function (event) {
+  siofu.addEventListener('complete', function (event) {
       console.log(event.success);
   });
 
@@ -40,12 +40,12 @@
       }
       Object.keys(data).forEach(function (key) {
         var values = JSON.parse(data[key]);
-        var img = document.createElement("img");
+        var img = document.createElement('img');
         img.id = key;
         img.src = values.url;
         img.style.cssText = values.position;
         Ω('#zone').append(img);
-        everyImageNeedsThese("#" + img.id);
+        everyImageNeedsThese('#' + img.id);
       });
     }
   });
@@ -65,25 +65,25 @@
     newImg.src = data.url;
     newImg.id = data.id;
     document.getElementById('zone').appendChild(newImg);
-    everyImageNeedsThese("#" + newImg.id);
+    everyImageNeedsThese('#' + newImg.id);
   });
 
   socket.on('remove', function (data) {
-    Ω("#" + data.id).destroy();
+    Ω('#' + data.id).destroy();
   });
 
   Ω('#imgbutton').click(function (e) {
     e.preventDefault();
     var imgValue = document.getElementById('imgInput').value;
-    document.getElementById('imgInput').value = "";
+    document.getElementById('imgInput').value = '';
     socket.emit('getId', {room: room, url: imgValue});
   });
 
   Ω('#bgbutton').click(function (e) {
     e.preventDefault();
     var bgValue = document.getElementById('bgInput').value;
-    document.getElementById('bgInput').value = "";
-    body().setBackground('white', bgValue, "center center");
+    document.getElementById('bgInput').value = '';
+    body().setBackground('white', bgValue, 'center center');
     var bgText = document.body.style.background;
     socket.emit('bg', {room: room, background: bgText});
   });
