@@ -1,18 +1,6 @@
+Ω().ready(function() {
+  'use strict';
 
-// to do: decide if background changes are too annoying
-
-// var changeBg = function (){
-//   socket.emit('setme', this.id);
-//   socket.on('set', function(data){
-//     document.body.style.background = data.background;
-//   });
-// };
-
-// var clearBg = function(){
-//   document.body.style.background = "";
-// };  
-Ω().ready(function(){
-  
   var socket = io.connect(document.location.host);
   
   (function loadIndex () {
@@ -22,23 +10,31 @@
       for (var i = 0; i < data.length; i++) {
         var listitem = document.createElement('li');
         var linkitem = document.createElement('a');
-        linkitem.href = "/" + data[i];
+        linkitem.href = '/' + data[i];
         listitem.id = data[i];
+        data[i] = prettyString(data[i]);
         var text = document.createTextNode(data[i]);
         linkitem.appendChild(text);
         listitem.appendChild(linkitem);
         roomlist.appendChild(listitem);
-        // listitem.onmouseover = changeBg;
-        // listitem.onmouseleave = clearBg;
       }
     });
   })();
 
-  function garden () {
-    window.location = document.location.origin + "/" + document.getElementsByTagName('input')[0].value;
-  };
+  function prettyString (str) {
+    if (str.indexOf('%20') >= 0) {
+      str = str.replace('%20', ' ');
+      return prettyString(str);
+    } else {
+      return str;
+    }
+  }
 
-  button().click(function(e){
+  function garden () {
+    window.location = document.location.origin + '/' + document.getElementsByTagName('input')[0].value;
+  }
+
+  button().click(function (e) {
     e.preventDefault();
     garden();
     return false;
