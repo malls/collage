@@ -3,6 +3,7 @@ extends layout
 block content
   script(src='/javascripts/client.min.js')
   script(src='/javascripts/fun.js')
+  - console.log(data)
   body
     #zone(dropzone="copy f:image/png f:image/gif f:image/jpeg f:image/ico f:image/bmp")
     #navbar
