@@ -94,13 +94,6 @@ io.sockets.on('connection', function (socket) {
     console.log("Error from uploader", event);
   });
 
-  //index
-  socket.on('ask', function () {
-    db.keys('*', function (err, reply) {
-      socket.emit('getrooms', reply);
-    });
-  });
-
   //rooms
 	socket.on('setme', function (data) {
 		db.hgetall(data, function (err, reply) {
