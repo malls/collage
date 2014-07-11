@@ -8,9 +8,10 @@ var SocketIOFileUploadServer = require("socketio-file-upload"),
   path = require('path'),
   knox = require('knox'),
   app = express(),
+  db = require('./app/rediser'),
   port = process.env.PORT || 3000,
   io = require('socket.io').listen(app.listen(port)),
-  db = require('./lib/redisConnect');
+  SocketIOFileUploadServer = require("socketio-file-upload");
 
 dotenv.load();
 
@@ -32,17 +33,6 @@ app
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     next();
   });
-
-db.select(0);
-db.set("multi part key", "redis connected", function () {
-  db.get("multi part key", function (err, response) {
-    console.log(response);
-  });
-  db.del("multi part key");
-});
-db.on("error", function (err) {
-  console.log("Error: " + err);
-});
 
 var s3 = knox.createClient({
     key: process.env.AS3_ACCESS_KEY,
@@ -66,18 +56,12 @@ app
           return res.send(500, err);
         }
         var imgid = "A" + crypto.randomBytes(5).toString('hex');
-        asocket.emit('newimage', {url: s3res.client._httpMessage.url, id: imgid});
+        socket.asocket.emit('newimage', {url: s3res.client._httpMessage.url, id: imgid});
       });
   });
 });
 
-//for post requests
-var asocket;
-
-//socket stuff
 io.sockets.on('connection', function (socket) {
-
-  asocket = socket;
 
   // upload stuff
   var uploader = new SocketIOFileUploadServer();
@@ -95,11 +79,11 @@ io.sockets.on('connection', function (socket) {
   });
 
   //rooms
-	socket.on('setme', function (data) {
-		db.hgetall(data, function (err, reply) {
-			socket.emit('set', reply);
-		});
-	});
+  socket.on('setme', function (data) {
+    db.hgetall(data, function (err, reply) {
+      socket.emit('set', reply);
+    });
+  });
 
   socket.on('send', function (data) {
     socket.broadcast.emit('move', data);
@@ -131,5 +115,7 @@ io.sockets.on('connection', function (socket) {
     db.hdel(data.room, data.id);
     socket.broadcast.emit('remove', {id: data.id});
   });
+
+  module.exports.asocket = socket;
 
 });

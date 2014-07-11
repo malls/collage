@@ -1,4 +1,4 @@
-var db = require('../lib/redisConnect');
+var db = require('../app/rediser');
 
 module.exports = {
 	load: function (req, res) {
