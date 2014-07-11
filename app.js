@@ -4,14 +4,13 @@ var SocketIOFileUploadServer = require("socketio-file-upload"),
   express = require('express'),
   crypto = require('crypto'),
   dotenv = require('dotenv'),
-  redis = require('redis'),
   http = require('http'),
   path = require('path'),
   knox = require('knox'),
-  url = require('url'),
   app = express(),
   port = process.env.PORT || 3000,
-  io = require('socket.io').listen(app.listen(port));
+  io = require('socket.io').listen(app.listen(port)),
+  db = require('./lib/redisConnect');
 
 dotenv.load();
 
@@ -33,14 +32,6 @@ app
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     next();
   });
-
-if (process.env.MODE === 'development') {
-  var db = redis.createClient(6379);
-} else {
-  var redisURL = url.parse(process.env.REDISCLOUD_URL);
-  var db = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
-  db.auth(redisURL.auth.split(":")[1]);
-}
 
 db.select(0);
 db.set("mnvcxz", "redis connected", function () {

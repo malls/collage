@@ -5,8 +5,12 @@ block content
   body    
     p Hello. Welcome to Garden Party Club, a platform for collaboratively and anonymously creating collages in real time. Find or create a garden below. Drag stuff around, shift-click to delete.
     h4#title garden index 
-    ul#roomlist
-    h4#roomzone create a garden
+    ul
+      each item in data
+        li
+          a(href='' + item) 
+            = item
+     h4#roomzone create a garden
       form
         input(type="text" autocomplete="off")
         button create
