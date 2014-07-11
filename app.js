@@ -35,10 +35,10 @@ app
 
 db.select(0);
 db.set("multi part key", "redis connected", function () {
-  db.get("mnvcxz", function (err, response) {
+  db.get("multi part key", function (err, response) {
     console.log(response);
   });
-  db.del("mnvcxz");
+  db.del("multi part key");
 });
 db.on("error", function (err) {
   console.log("Error: " + err);
