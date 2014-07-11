@@ -34,7 +34,7 @@ app
   });
 
 db.select(0);
-db.set("mnvcxz", "redis connected", function () {
+db.set("multi part key", "redis connected", function () {
   db.get("mnvcxz", function (err, response) {
     console.log(response);
   });

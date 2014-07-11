@@ -3,7 +3,6 @@ var db = require('../lib/redisConnect'),
 
 module.exports = {
   show: function (req, res) {
-    db.set('multi part key', 'value');
     db.keys('*', function (err, reply) {
       var data = [];
       for (var i = 0; i < reply.length; i++) {
