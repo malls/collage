@@ -1,6 +1,8 @@
 var SocketIOFileUploadServer = require("socketio-file-upload"),
   index = require('./controllers/index'),
   room = require('./controllers/room'),
+  port = process.env.PORT || 3000,
+  db = require('./app/rediser'),
   express = require('express'),
   crypto = require('crypto'),
   dotenv = require('dotenv'),
@@ -8,10 +10,7 @@ var SocketIOFileUploadServer = require("socketio-file-upload"),
   path = require('path'),
   knox = require('knox'),
   app = express(),
-  db = require('./app/rediser'),
-  port = process.env.PORT || 3000,
-  io = require('socket.io').listen(app.listen(port)),
-  SocketIOFileUploadServer = require("socketio-file-upload");
+  io = require('socket.io').listen(app.listen(port));
 
 dotenv.load();
 
