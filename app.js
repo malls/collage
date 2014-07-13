@@ -78,12 +78,6 @@ io.sockets.on('connection', function (socket) {
   });
 
   //rooms
-  socket.on('setme', function (data) {
-    db.hgetall(data, function (err, reply) {
-      socket.emit('set', reply);
-    });
-  });
-
   socket.on('send', function (data) {
     socket.broadcast.emit('move', data);
   });
