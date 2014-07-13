@@ -1,12 +1,11 @@
-var SocketIOFileUploadServer = require("socketio-file-upload"),
+var SocketIOFileUploadServer = require('socketio-file-upload'),
   index = require('./controllers/index'),
   room = require('./controllers/room'),
   port = process.env.PORT || 3000,
   db = require('./app/rediser'),
+  garden = require('./lib/garden'),
   express = require('express'),
-  crypto = require('crypto'),
   dotenv = require('dotenv'),
-  http = require('http'),
   path = require('path'),
   knox = require('knox'),
   app = express(),
@@ -28,8 +27,8 @@ app
   .use(SocketIOFileUploadServer.router)
   .use(express.static(path.join(__dirname, 'public')))
   .all('*', function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
     next();
   });
 
@@ -54,27 +53,27 @@ app
         if (err) {
           return res.send(500, err);
         }
-        var imgid = "A" + crypto.randomBytes(5).toString('hex');
+        var imgid = garden.id('A');
         socket.asocket.emit('newimage', {url: s3res.client._httpMessage.url, id: imgid});
       });
   });
 });
 
 io.sockets.on('connection', function (socket) {
-
+  'use strict';
   // upload stuff
   var uploader = new SocketIOFileUploadServer();
   uploader.listen(socket);
 
-  uploader.dir = "./public/images";
+  uploader.dir = './public/images';
 
   uploader.on('saved', function (event) {
-    var imgid = "U" + crypto.randomBytes(5).toString('hex');
+    var imgid = garden.id('U');
     socket.emit('newimage', {url: event.file.pathName.substr(6), id: imgid});
   });
 
   uploader.on('error', function (event) {
-    console.log("Error from uploader", event);
+    console.log('Error from uploader', event);
   });
 
   //rooms
@@ -92,7 +91,7 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('getId', function (data) {
-    var imgid = "L" + crypto.randomBytes(5).toString('hex');
+    var imgid = garden.id('L');
     dataString = JSON.stringify(data);
     socket.broadcast.emit('newimage', {url: data.url, id: imgid});
     socket.emit('newimage', {url: data.url, id: imgid});
