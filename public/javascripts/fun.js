@@ -1,9 +1,11 @@
 Ω().ready(function () {
   
+  'use strict';
+
   var socket = io.connect(document.location.host);
   var room = window.location.pathname.substr(1);
  
-  //refactor
+  //refactor?
   function everyImageNeedsThese(element) {
     Ω(element)
       .on('click', function (e) {
@@ -26,10 +28,10 @@
 
   everyImageNeedsThese('img');
 
- var siofu = new SocketIOFileUpload(socket);
-  siofu.listenOnDrop(document.body);
-  siofu.addEventListener('complete', function (event) {
-      console.log(event.success);
+  var siofu = new SocketIOFileUpload(socket);
+    siofu.listenOnDrop(document.body);
+    siofu.addEventListener('complete', function (event) {
+        console.log(event.success);
   });
 
   socket.on('move', function (data) {
