@@ -2,10 +2,10 @@
   
   var socket = io.connect(document.location.host);
   var room = window.location.pathname.substr(1);
-  var images = document.getElementsByTagName('img')
-  
-  function everyImageNeedsThese() {
-    Ω('img')
+ 
+  //refactor
+  function everyImageNeedsThese(element) {
+    Ω(element)
       .on('click', function (e) {
         Ω(e).zup();
         if (e.shiftKey) {
@@ -24,7 +24,7 @@
     });
   }
 
-  everyImageNeedsThese()
+  everyImageNeedsThese('img');
 
  var siofu = new SocketIOFileUpload(socket);
   siofu.listenOnDrop(document.body);
