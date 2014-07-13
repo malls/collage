@@ -1,11 +1,11 @@
 Ω().ready(function () {
-  'use strict';
   
   var socket = io.connect(document.location.host);
   var room = window.location.pathname.substr(1);
-  
-  function everyImageNeedsThese(id) {
-    Ω(id)
+ 
+  //refactor
+  function everyImageNeedsThese(element) {
+    Ω(element)
       .on('click', function (e) {
         Ω(e).zup();
         if (e.shiftKey) {
@@ -23,31 +23,13 @@
         socket.emit('send', {position: position, id: id});
     });
   }
- 
+
+  everyImageNeedsThese('img');
+
  var siofu = new SocketIOFileUpload(socket);
   siofu.listenOnDrop(document.body);
   siofu.addEventListener('complete', function (event) {
       console.log(event.success);
-  });
-
-  socket.emit('setme', room);
-
-  socket.on('set', function (data) {
-    if (data) {
-      if (data.background) {
-        document.body.style.background = data.background;
-        delete data.background;
-      }
-      Object.keys(data).forEach(function (key) {
-        var values = JSON.parse(data[key]);
-        var img = document.createElement('img');
-        img.id = key;
-        img.src = values.url;
-        img.style.cssText = values.position;
-        Ω('#zone').append(img);
-        everyImageNeedsThese('#' + img.id);
-      });
-    }
   });
 
   socket.on('move', function (data) {
