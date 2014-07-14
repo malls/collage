@@ -17,14 +17,15 @@ if (process.env.MODE === 'development') {
 db.select(process.env.REDISDB || 0);
 
 //test db connection, output something in terminal
-db.set("tyler's garden", "redis connected", function () {
-  db.get("tyler's garden", function (err, response) {
+db.set("fdajfkdajfasfda", "redis connected", function () {
+  db.get("fdajfkdajfasfda", function (err, response) {
     console.log(response);
   });
-  db.del("tyler's garden");
+  db.del("fdajfkdajfasfda");
 });
+
 db.on("error", function (err) {
-  console.log("Error: " + err);
+  console.log("Redis Error: " + err);
 });
 
 module.exports = db;
