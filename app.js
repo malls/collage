@@ -86,19 +86,17 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('disconnect', function () {
-    console.log('a user disconnected. database saved');
+    console.log('A user disconnected. Database saved');
     db.bgsave();
   });
 
   socket.on('getId', function (data) {
     var imgid = garden.id('L');
-    dataString = JSON.stringify(data);
     socket.broadcast.emit('newimage', {url: data.url, id: imgid});
     socket.emit('newimage', {url: data.url, id: imgid});
   });
 
   socket.on('bg', function (data) {
-    console.log(data);
     socket.broadcast.emit('set', {background: data.background});
     db.hset(data.room, 'background', data.background);
   });

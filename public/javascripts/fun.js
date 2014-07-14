@@ -2,6 +2,8 @@
   
   'use strict';
 
+  Ω().shortcuts();
+
   var socket = io.connect(document.location.host);
   var room = window.location.pathname.substr(1);
  
@@ -50,6 +52,10 @@
     newImg.id = data.id;
     document.getElementById('zone').appendChild(newImg);
     everyImageNeedsThese('#' + newImg.id);
+  });
+
+  socket.on('set', function(data){
+    document.style.background = data.background;
   });
 
   socket.on('remove', function (data) {
