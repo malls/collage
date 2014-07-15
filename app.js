@@ -54,14 +54,19 @@ app
           return res.send(500, err);
         }
         var imgid = garden.id('A');
-        socket.asocket.emit('newimage', {url: s3res.client._httpMessage.url, id: imgid});
+        asocket.emit('newimage', {url: s3res.client._httpMessage.url, id: imgid});
       });
   });
 });
 
+var asocket;
+
 io.sockets.on('connection', function (socket) {
   'use strict';
   // upload stuff
+
+  asocket = socket;
+
   var uploader = new SocketIOFileUploadServer();
   uploader.listen(socket);
 
@@ -105,7 +110,5 @@ io.sockets.on('connection', function (socket) {
     db.hdel(data.room, data.id);
     socket.broadcast.emit('remove', {id: data.id});
   });
-
-  module.exports.asocket = socket;
 
 });
