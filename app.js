@@ -90,11 +90,6 @@ io.sockets.on('connection', function (socket) {
     db.hset(data.room, data.id, JSON.stringify(data));
   });
 
-  socket.on('disconnect', function () {
-    console.log('A user disconnected. Database saved');
-    db.bgsave();
-  });
-
   socket.on('getId', function (data) {
     var imgid = garden.id('L');
     socket.broadcast.emit('newimage', {url: data.url, id: imgid});
@@ -110,5 +105,10 @@ io.sockets.on('connection', function (socket) {
     db.hdel(data.room, data.id);
     socket.broadcast.emit('remove', {id: data.id});
   });
+
+  // socket.on('disconnect', function () {
+  //   db.bgsave();
+  //   console.log('A user disconnected. Database saved');
+  // });
 
 });
