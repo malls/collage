@@ -12,11 +12,13 @@
         if (e.shiftKey) {
           socket.emit('destroy', {id: e.currentTarget.id, room: room});
           Ω(e).destroy();
+        } else {
+          socket.emit('savePosition', {position: this.style.cssText, id: this.id, url: this.src, room: room});
         }
       })
       .draggable()
       .on('dragend', function () {
-        socket.emit('stopdrag', {position: this.style.cssText, id: this.id, url: this.src, room: room});
+        socket.emit('savePosition', {position: this.style.cssText, id: this.id, url: this.src, room: room});
       })
       .drag(function (e) {
         var position = e.currentTarget.style.cssText;

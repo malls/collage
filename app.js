@@ -86,7 +86,7 @@ io.sockets.on('connection', function (socket) {
     socket.broadcast.emit('move', data);
   });
 
-  socket.on('stopdrag', function (data) {
+  socket.on('savePosition', function (data) {
     db.hset(data.room, data.id, JSON.stringify(data));
   });
 
