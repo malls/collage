@@ -1,8 +1,10 @@
-var db = require('../app/rediser');
+var db = require('../app/rediser'),
+    garden = require('../lib/garden');
 
 module.exports = {
 	load: function (req, res) {
-		db.hgetall(req.params.room, function (err, reply) {
+    var roomKey = garden.uglyString(req.params.room);
+		db.hgetall(roomKey, function (err, reply) {
       var background;
       if (reply) {
         if (reply.background) {

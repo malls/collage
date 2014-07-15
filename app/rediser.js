@@ -17,12 +17,16 @@ if (process.env.MODE === 'development') {
 db.select(process.env.REDISDB || 0);
 
 //test db connection, output something in terminal
-db.set("fdajfkdajfasfda", "redis connected", function () {
-  db.get("fdajfkdajfasfda", function (err, response) {
+db.set("rthdnajfondaopfda", "redis connected", function () {
+  db.get("rthdnajfondaopfda", function (err, response) {
     console.log(response);
   });
-  db.del("fdajfkdajfasfda");
+  db.del("rthdnajfondaopfda");
 });
+
+// db.keys('*', function(err, res){
+//   console.log(res);
+// });
 
 db.on("error", function (err) {
   console.log("Redis Error: " + err);
