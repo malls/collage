@@ -7,7 +7,7 @@ dotenv.load();
 
 //check if it's development, then use redis db if not
 if (process.env.MODE === 'development') {
-  db = redis.createClient(6379);
+  db = redis.createClient(process.env.REDISPORT || 6379);
 } else {
   var redisURL = url.parse(process.env.REDISCLOUD_URL);
   db = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});

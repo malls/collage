@@ -1,6 +1,4 @@
 var SocketIOFileUploadServer = require('socketio-file-upload'),
-  index = require('./controllers/index'),
-  room = require('./controllers/room'),
   port = process.env.PORT || 3000,
   db = require('./app/rediser'),
   garden = require('./lib/garden'),
@@ -9,6 +7,8 @@ var SocketIOFileUploadServer = require('socketio-file-upload'),
   path = require('path'),
   knox = require('knox'),
   app = express(),
+  index = require('./controllers/index'),
+  room = require('./controllers/room'),
   io = require('socket.io').listen(app.listen(port));
 
 dotenv.load();

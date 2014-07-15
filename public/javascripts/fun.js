@@ -2,12 +2,9 @@
   
   'use strict';
 
-  Ω().shortcuts();
-
   var socket = io.connect(document.location.host);
   var room = window.location.pathname.substr(1);
  
-  //refactor?
   function everyImageNeedsThese(element) {
     Ω(element)
       .on('click', function (e) {

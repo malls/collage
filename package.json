@@ -15,7 +15,8 @@
     "redis": "latest",
     "hiredis": "latest",
     "requirejs": "latest",
-    "socketio-file-upload": "^0.2.7"
+    "socketio-file-upload": "^0.2.7",
+    "connect": "2.23.0"
   },
   "devDependencies": {
     "mocha": "latest",

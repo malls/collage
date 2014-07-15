@@ -5,8 +5,9 @@ block content
   script(src='/javascripts/fun.js')
   body(style="background: " + background)
     #zone(dropzone="copy f:image/png f:image/gif f:image/jpeg f:image/ico f:image/bmp")
-      each item in data
-        img(id=item.id style=item.position src=item.url)
+      if data 
+        each item in data
+          img(id=item.id style=item.position src=item.url)
     #navbar
       ul
         li.baritem upload an image:
