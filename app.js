@@ -106,9 +106,4 @@ io.sockets.on('connection', function (socket) {
     socket.broadcast.emit('remove', {id: data.id});
   });
 
-  // socket.on('disconnect', function () {
-  //   db.bgsave();
-  //   console.log('A user disconnected. Database saved');
-  // });
-
 });
