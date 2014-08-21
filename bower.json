@@ -1,0 +1,7 @@
+{
+  "name": "garden-party",
+  "directory": "public/javascripts/bower_components",
+  "dependencies": {
+    "socketio-file-upload": "*"
+  }
+}
