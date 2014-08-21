@@ -1,5 +1,7 @@
 module.exports = function (grunt) {
 
+    'use strict';
+
     require('load-grunt-tasks')(grunt);
 
     grunt.initConfig({
@@ -37,8 +39,8 @@ module.exports = function (grunt) {
 
         open: {
             dev: {
-                path: "http://0.0.0.0:3000/",
-                app: "Google Chrome"
+                path: 'http://0.0.0.0:3000/',
+                app: 'Google Chrome'
             }
         },
 
@@ -75,7 +77,7 @@ module.exports = function (grunt) {
                 options: {
                     livereload: true
                 }
-            }
+            },
             options: {
                 reload: true
             },
