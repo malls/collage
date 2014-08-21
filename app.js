@@ -34,11 +34,11 @@ app
     next();
   });
 
-// var s3 = knox.createClient({
-//     key: process.env.AS3_ACCESS_KEY,
-//     secret: process.env.AS3_SECRET_ACCESS_KEY,
-//     bucket: process.env.AS3_BUCKET,
-// });
+var s3 = knox.createClient({
+    key: process.env.AS3_ACCESS_KEY,
+    secret: process.env.AS3_SECRET_ACCESS_KEY,
+    bucket: process.env.AS3_BUCKET,
+});
 
 //routes - move elsewhere
 app
@@ -51,13 +51,13 @@ app
     };
     req.form.on('part', function (part) {
       headers['Content-Length'] = part.byteCount;
-      // s3.putStream(part, part.filename, headers, function (err, s3res) {
-      //   if (err) {
-      //     return res.send(500, err);
-      //   }
+      s3.putStream(part, part.filename, headers, function (err, s3res) {
+        if (err) {
+          return res.send(500, err);
+        }
         var imgid = garden.id('A');
-        // asocket.emit('newimage', {url: s3res.client._httpMessage.url, id: imgid});
-      // });
+        asocket.emit('newimage', {url: s3res.client._httpMessage.url, id: imgid});
+      });
   });
 });
 
