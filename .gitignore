@@ -1,6 +1,6 @@
 .env
 dump.rdb
-node_modules/
-public/images/
 npm-debug.log
-public/javascripts/bower_modules/
+node_modules/
+public/bower_components/
+public/images/

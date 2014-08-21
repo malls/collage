@@ -25,7 +25,7 @@ app
   .use(express.multipart({ defer: true }))
   .use(app.router)
   .use(SocketIOFileUploadServer.router)
-  .use(express.static(path.join(__dirname, 'public')))
+  .use(express.static(path.join(__dirname, 'public'), {maxAge: 42069}))
   .all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
