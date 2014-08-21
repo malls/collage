@@ -3,3 +3,4 @@ dump.rdb
 node_modules/
 public/images/
 npm-debug.log
+public/javascripts/bower_modules/
