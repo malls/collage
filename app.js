@@ -1,9 +1,13 @@
+'use strict';
+
+var dotenv = require('dotenv');
+dotenv.load();
+
 var SocketIOFileUploadServer = require('socketio-file-upload'),
   port = process.env.PORT || 3000,
   db = require('./app/rediser'),
   garden = require('./lib/garden'),
   express = require('express'),
-  dotenv = require('dotenv'),
   path = require('path'),
   knox = require('knox'),
   app = express(),
@@ -11,11 +15,9 @@ var SocketIOFileUploadServer = require('socketio-file-upload'),
   room = require('./controllers/room'),
   io = require('socket.io').listen(app.listen(port));
 
-dotenv.load();
-
 // all environments
 app
-  .set('port', process.env.PORT || 3000)
+  .set('port', port)
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'jade')
   .use(express.logger('dev'))
@@ -32,11 +34,11 @@ app
     next();
   });
 
-var s3 = knox.createClient({
-    key: process.env.AS3_ACCESS_KEY,
-    secret: process.env.AS3_SECRET_ACCESS_KEY,
-    bucket: process.env.AS3_BUCKET,
-});
+// var s3 = knox.createClient({
+//     key: process.env.AS3_ACCESS_KEY,
+//     secret: process.env.AS3_SECRET_ACCESS_KEY,
+//     bucket: process.env.AS3_BUCKET,
+// });
 
 //routes - move elsewhere
 app
@@ -49,22 +51,21 @@ app
     };
     req.form.on('part', function (part) {
       headers['Content-Length'] = part.byteCount;
-      s3.putStream(part, part.filename, headers, function (err, s3res) {
-        if (err) {
-          return res.send(500, err);
-        }
+      // s3.putStream(part, part.filename, headers, function (err, s3res) {
+      //   if (err) {
+      //     return res.send(500, err);
+      //   }
         var imgid = garden.id('A');
-        asocket.emit('newimage', {url: s3res.client._httpMessage.url, id: imgid});
-      });
+        // asocket.emit('newimage', {url: s3res.client._httpMessage.url, id: imgid});
+      // });
   });
 });
 
 var asocket;
 
 io.sockets.on('connection', function (socket) {
-  'use strict';
+  
   // upload stuff
-
   asocket = socket;
 
   var uploader = new SocketIOFileUploadServer();
@@ -107,3 +108,5 @@ io.sockets.on('connection', function (socket) {
   });
 
 });
+
+console.log('now listening on port', port);
