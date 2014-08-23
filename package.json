@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "test": "cd lib & mocha & cd .. & node app.js & open http://0.0.0.0:3000"
+    "test": "node app.js & open http://0.0.0.0:3000"
   },
   "dependencies": {
     "express": "3.4.8",

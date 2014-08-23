@@ -42,12 +42,15 @@
 		//general method to iterate through selected elements and apply the method
 
 		loop: function (fn) {
-			if (this.obj[0] === undefined) {
-				return fn(this.obj);
-			} else {
-				var len = this.obj.length;
-				for (var i = 0; i < len; i++) {
-					fn(this.obj[i]);
+			console.log(this.obj);
+			if(this.obj){
+				if (this.obj[0] === undefined) {
+					return fn(this.obj);
+				} else {
+					var len = this.obj.length;
+					for (var i = 0; i < len; i++) {
+						fn(this.obj[i]);
+					}
 				}
 			}
 		},

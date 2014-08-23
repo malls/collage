@@ -1,0 +1,8 @@
+
+{
+  "name": "gardenparty",
+  "version": "0.0.1",
+  "dependencies": {
+    "luck": "git+ssh://git@github.com/malls/luck.js.git"
+  }
+}
