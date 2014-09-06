@@ -1,8 +1,8 @@
-
 {
-  "name": "gardenparty",
-  "version": "0.0.1",
+  "name": "garden-party",
+  "directory": "public/javascripts/bower_components",
   "dependencies": {
-    "luck": "git+ssh://git@github.com/malls/luck.js.git"
+    "socketio-file-upload": "*",
+    "luck.js": "git://github.com/malls/luck.js"
   }
 }

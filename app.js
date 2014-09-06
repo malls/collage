@@ -1,9 +1,13 @@
+'use strict';
+
+var dotenv = require('dotenv');
+dotenv.load();
+
 var SocketIOFileUploadServer = require('socketio-file-upload'),
   port = process.env.PORT || 3000,
   db = require('./app/rediser'),
   garden = require('./lib/garden'),
   express = require('express'),
-  dotenv = require('dotenv'),
   path = require('path'),
   knox = require('knox'),
   app = express(),
@@ -11,11 +15,9 @@ var SocketIOFileUploadServer = require('socketio-file-upload'),
   room = require('./controllers/room'),
   io = require('socket.io').listen(app.listen(port));
 
-dotenv.load();
-
 // all environments
 app
-  .set('port', process.env.PORT || 3000)
+  .set('port', port)
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'jade')
   .use(express.logger('dev'))
@@ -25,7 +27,7 @@ app
   .use(express.multipart({ defer: true }))
   .use(app.router)
   .use(SocketIOFileUploadServer.router)
-  .use(express.static(path.join(__dirname, 'public')))
+  .use(express.static(path.join(__dirname, 'public'), {maxAge: 42069}))
   .all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
@@ -62,9 +64,8 @@ app
 var asocket;
 
 io.sockets.on('connection', function (socket) {
-  'use strict';
+  
   // upload stuff
-
   asocket = socket;
 
   var uploader = new SocketIOFileUploadServer();
@@ -106,4 +107,7 @@ io.sockets.on('connection', function (socket) {
     socket.broadcast.emit('remove', {id: data.id});
   });
 
+
 });
+
+console.log('now listening on port', port);
