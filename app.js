@@ -108,6 +108,7 @@ io.sockets.on('connection', function (socket) {
     socket.broadcast.emit('remove', {id: data.id});
   });
 
+
 });
 
 console.log('now listening on port', port);
