@@ -74,6 +74,7 @@ io.sockets.on('connection', function (socket) {
   uploader.dir = './public/images';
 
   uploader.on('saved', function (event) {
+    console.log(event.file);
     var imgid = garden.id('U');
     socket.emit('newimage', {url: event.file.pathName.substr(6), id: imgid});
   });
