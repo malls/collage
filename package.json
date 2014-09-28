@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "test": "node app.js & open http://0.0.0.0:3000",
+    "test": "cd lib && mocha",
     "postinstall": "bower install"
   },
   "dependencies": {
