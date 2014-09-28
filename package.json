@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "test": "cd lib && mocha",
-    "postinstall": "bower install"
+    "test": "cd lib && mocha"
+    // "postinstall": "bower install"
   },
   "dependencies": {
     "express": "3.4.8",
