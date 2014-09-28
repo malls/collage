@@ -1,3 +1,5 @@
+'use strict';
+
 var url = require('url'),
     redis = require('redis'),
     dotenv = require('dotenv'),
@@ -23,10 +25,6 @@ db.set("rthdnajfondaopfda", "redis connected", function () {
   });
   db.del("rthdnajfondaopfda");
 });
-
-// db.keys('*', function(err, res){
-//   console.log(res);
-// });
 
 db.on("error", function (err) {
   console.log("Redis Error: " + err);

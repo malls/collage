@@ -14,9 +14,9 @@
     "dotenv": "latest",
     "redis": "latest",
     "hiredis": "latest",
-    "requirejs": "latest",
     "socketio-file-upload": "^0.2.7",
-    "connect": "2.23.0"
+    "connect": "2.23.0",
+    "mongoose": "^3.8.16"
   },
   "devDependencies": {
     "mocha": "latest",

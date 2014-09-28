@@ -6,6 +6,7 @@ dotenv.load();
 var SocketIOFileUploadServer = require('socketio-file-upload'),
   port = process.env.PORT || 3000,
   db = require('./app/rediser'),
+  mongo = require('./app/mongo'),
   garden = require('./lib/garden'),
   express = require('express'),
   path = require('path'),
@@ -13,7 +14,9 @@ var SocketIOFileUploadServer = require('socketio-file-upload'),
   app = express(),
   index = require('./controllers/index'),
   room = require('./controllers/room'),
-  io = require('socket.io').listen(app.listen(port));
+  images = require('./app/images'),
+  io = require('socket.io').listen(app.listen(port)),
+  asocket;
 
 // all environments
 app
@@ -44,6 +47,7 @@ var s3 = knox.createClient({
 app
   .get('/', index.show)
   .get('/:room', room.load)
+  .get('/images/:id', images.serve)
   .post('/file-upload', function (req, res) {
     var headers = {
       'x-amz-acl': 'public-read',
@@ -60,8 +64,6 @@ app
       });
   });
 });
-
-var asocket;
 
 io.sockets.on('connection', function (socket) {
   
@@ -106,7 +108,6 @@ io.sockets.on('connection', function (socket) {
     db.hdel(data.room, data.id);
     socket.broadcast.emit('remove', {id: data.id});
   });
-
 
 });
 
