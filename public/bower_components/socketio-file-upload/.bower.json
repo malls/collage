@@ -1,0 +1,13 @@
+{
+  "name": "socketio-file-upload",
+  "homepage": "https://github.com/vote539/socketio-file-upload",
+  "_release": "7c5207a580",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "7c5207a580e752fb3bb250e1183bf1d272a67f53"
+  },
+  "_source": "git://github.com/vote539/socketio-file-upload.git",
+  "_target": "*",
+  "_originalSource": "socketio-file-upload"
+}

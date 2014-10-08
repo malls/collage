@@ -49,6 +49,7 @@
     var newImg = document.createElement('img');
     newImg.src = data.url;
     newImg.id = data.id;
+    console.log(newImg);
     document.getElementById('zone').appendChild(newImg);
     everyImageNeedsThese('#' + newImg.id);
   });
