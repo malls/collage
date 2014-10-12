@@ -9,14 +9,14 @@
   "dependencies": {
     "express": "3.4.8",
     "jade": "*",
-    "socket.io": "0.9.14",
     "knox": "latest",
     "dotenv": "latest",
     "redis": "latest",
     "hiredis": "latest",
     "socketio-file-upload": "^0.2.7",
     "connect": "2.23.0",
-    "mongoose": "^3.8.16"
+    "mongoose": "^3.8.16",
+    "socket.io": "^1.1.0"
   },
   "devDependencies": {
     "mocha": "latest",

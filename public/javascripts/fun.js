@@ -2,7 +2,7 @@
   
   'use strict';
 
-  var socket = io.connect(document.location.host);
+  var socket = io(document.location.host);
   var room = window.location.pathname.substr(1);
  
   function everyImageNeedsThese(element) {
