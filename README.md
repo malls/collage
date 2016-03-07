@@ -12,4 +12,4 @@ public - assets
 
 views - jade templates
 
-request bugs and report features to forrest.almasi@gmail.com
+request bugs and report features to _@forrestalmasi.com

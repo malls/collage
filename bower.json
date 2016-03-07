@@ -3,6 +3,7 @@
   "directory": "public/javascripts/bower_components",
   "dependencies": {
     "socketio-file-upload": "*",
-    "luck.js": "git://github.com/malls/luck.js"
+    "luck.js": "git://github.com/malls/luck.js",
+    "file-uploader": "~0.8.1"
   }
 }
