@@ -16,6 +16,7 @@ var SocketIOFileUploadServer = require('socketio-file-upload'),
   room = require('./controllers/room'),
   // images = require('./app/images'),
   io = require('socket.io').listen(app.listen(port)),
+  aws = require('aws-sdk'),
   asocket;
 
 // all environments
@@ -50,8 +51,6 @@ var s3 = knox.createClient({
 //routes - move elsewhere
 app
   .get('/', index.show)
-  .get('/:room', room.load)
-  // .get('/image/:id', images.serve)
   .get('/sign', function(req, res) {
 
     aws.config.update({
@@ -76,25 +75,27 @@ app
       });
     });
   })
-  .post('/file-upload', function(req, res) {
-    var headers = {
-      'x-amz-acl': 'public-read',
-      'Access-Control-Allow-Origin': '*'
-    };
-    req.form.on('part', function(part) {
-      headers['Content-Length'] = part.byteCount;
-      s3.putStream(part, part.filename, headers, function(err, s3res) {
-        if (err) {
-          return res.send(500, err);
-        }
-        var imgid = garden.id('A');
-        asocket.emit('newimage', {
-          url: s3res.client._httpMessage.url,
-          id: imgid
-        });
-      });
-    });
-  });
+  .get('/:room', room.load)
+  // .get('/image/:id', images.serve)
+  // .post('/file-upload', function(req, res) {
+  //   var headers = {
+  //     'x-amz-acl': 'public-read',
+  //     'Access-Control-Allow-Origin': '*'
+  //   };
+  //   req.form.on('part', function(part) {
+  //     headers['Content-Length'] = part.byteCount;
+  //     s3.putStream(part, part.filename, headers, function(err, s3res) {
+  //       if (err) {
+  //         return res.send(500, err);
+  //       }
+  //       var imgid = garden.id('A');
+  //       asocket.emit('newimage', {
+  //         url: s3res.client._httpMessage.url,
+  //         id: imgid
+  //       });
+  //     });
+  //   });
+  // });
 
 io.sockets.on('connection', function(socket) {
 

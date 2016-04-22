@@ -1,7 +1,6 @@
 extends layout
 
 block content
-  script(src='/bower_components/socketio-file-upload/client.min.js')
   script(src='/javascripts/fun.js')
   body(style="background: " + background)
     #zone(dropzone="copy f:image/png f:image/gif f:image/jpeg f:image/ico f:image/bmp")
@@ -12,9 +11,7 @@ block content
       ul
         li.baritem upload an image:
         li.baritem
-          form(method="POST" action="/file-upload" enctype="multipart/form-data")
-            input(type="file" name="file")
-            input(type="submit" value="submit")
+          input#upload(type="file")
         li.baritem
           #imgzone add img from url:
             input#imgInput(type="text" name="url" placeholder="paste a url" autocomplete="off")

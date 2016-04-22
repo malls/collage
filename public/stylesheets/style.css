@@ -44,7 +44,7 @@ ul {
   margin: auto;
   color: white;
   background-color: black;
-  height: 27px;
+  height: 35px;
   z-index: 999999999999999999999999999999999;
 }
 
@@ -52,3 +52,7 @@ ul {
   display: inline-block;
   padding-right: 10px;
 }
+
+/*#upload {
+  display: none;
+}*/

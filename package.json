@@ -10,23 +10,18 @@
     "aws-sdk": "^2.3.5",
     "connect": "2.23.0",
     "dotenv": "latest",
+    "dotenv": "~0.4.0",
     "express": "3.4.8",
-    "hiredis": "latest",
     "jade": "*",
-    "knox": "latest",
+    "jade": "~  1.7.0",
+    "knox": "0.9.1",
     "mongoose": "^3.8.16",
-    "redis": "latest",
+    "redis": "^0.12.1",
     "socket.io": "0.9.14",
-    "socketio-file-upload": "^0.2.7"
+    "socket.io": "^1.1.0",
+    "socketio-file-upload": "^0.4.6"
   },
   "devDependencies": {
-    "mocha": "latest",
-    "grunt": "^0.4.5",
-    "grunt-contrib-jshint": "^0.10.0",
-    "load-grunt-tasks": "^0.4.0",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-open": "^0.2.3",
-    "grunt-nodemon": "^0.2.1",
-    "grunt-inject": "^0.1.1"
+    "mocha": "latest"
   }
 }

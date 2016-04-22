@@ -42,6 +42,10 @@
 		//general method to iterate through selected elements and apply the method
 
 		loop: function (fn) {
+			if (!this.obj) {
+				this.obj = document;
+				return fn(this.obj);
+			}
 			if (this.obj[0] === undefined) {
 				return fn(this.obj);
 			} else {
