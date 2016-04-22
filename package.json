@@ -12,10 +12,8 @@
     "dotenv": "~0.4.0",
     "express": "3.4.8",
     "jade": "*",
-    "knox": "0.9.1",
     "redis": "^0.12.1",
-    "socket.io": "^1.1.0",
-    "socketio-file-upload": "^0.4.6"
+    "socket.io": "^1.1.0"
   },
   "devDependencies": {
     "mocha": "latest"
