@@ -7,16 +7,17 @@
     "test": "cd lib && mocha"
   },
   "dependencies": {
-    "express": "3.4.8",
-    "jade": "*",
-    "socket.io": "0.9.14",
-    "knox": "latest",
-    "dotenv": "latest",
-    "redis": "latest",
-    "hiredis": "latest",
-    "socketio-file-upload": "^0.2.7",
+    "aws-sdk": "^2.3.5",
     "connect": "2.23.0",
-    "mongoose": "^3.8.16"
+    "dotenv": "latest",
+    "express": "3.4.8",
+    "hiredis": "latest",
+    "jade": "*",
+    "knox": "latest",
+    "mongoose": "^3.8.16",
+    "redis": "latest",
+    "socket.io": "0.9.14",
+    "socketio-file-upload": "^0.2.7"
   },
   "devDependencies": {
     "mocha": "latest",
