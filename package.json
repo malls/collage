@@ -9,15 +9,11 @@
   "dependencies": {
     "aws-sdk": "^2.3.5",
     "connect": "2.23.0",
-    "dotenv": "latest",
     "dotenv": "~0.4.0",
     "express": "3.4.8",
     "jade": "*",
-    "jade": "~  1.7.0",
     "knox": "0.9.1",
-    "mongoose": "^3.8.16",
     "redis": "^0.12.1",
-    "socket.io": "0.9.14",
     "socket.io": "^1.1.0",
     "socketio-file-upload": "^0.4.6"
   },

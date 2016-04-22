@@ -10,7 +10,7 @@ var SocketIOFileUploadServer = require('socketio-file-upload'),
   garden = require('./lib/garden'),
   express = require('express'),
   path = require('path'),
-  knox = require('knox'),
+  // knox = require('knox'),
   app = express(),
   index = require('./controllers/index'),
   room = require('./controllers/room'),
@@ -42,11 +42,11 @@ app
     next();
   });
 
-var s3 = knox.createClient({
-  key: process.env.AS3_ACCESS_KEY,
-  secret: process.env.AS3_SECRET_ACCESS_KEY,
-  bucket: process.env.AS3_BUCKET,
-});
+// var s3 = knox.createClient({
+//   key: process.env.AS3_ACCESS_KEY,
+//   secret: process.env.AS3_SECRET_ACCESS_KEY,
+//   bucket: process.env.AS3_BUCKET,
+// });
 
 //routes - move elsewhere
 app
