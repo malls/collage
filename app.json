@@ -1,0 +1,40 @@
+{
+  "name": "collage",
+  "scripts": {
+  },
+  "env": {
+    "AS3_ACCESS_KEY": {
+      "required": true
+    },
+    "AS3_BUCKET": {
+      "required": true
+    },
+    "AS3_SECRET_ACCESS_KEY": {
+      "required": true
+    },
+    "BUILDPACK_URL": {
+      "required": true
+    },
+    "MONGO": {
+      "required": true
+    },
+    "MONGOLAB_URI": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+    "logentries",
+    "mongolab",
+    "rediscloud"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
