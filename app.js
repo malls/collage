@@ -38,6 +38,10 @@ app
 //routes - move elsewhere
 app
   .get('/', index.show)
+  .get('/robots.txt', function(req, res) {
+    res.type('text/plain');
+    res.send("User-agent: *\nAllow: /");
+  })
   .get('/sign', room.sign)
   .get('/:room', room.load)
 
