@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node app.js",
     "test": "cd lib && mocha",
+    "lint": "jshint --verbose app/*.js app/*.js lib/*.js public/javascripts/*.js || true",
     "dev": "nodemon"
   },
   "dependencies": {
@@ -13,6 +14,7 @@
     "dotenv": "^2.0.0",
     "express": "3.4.8",
     "jade": "^1.11.0",
+    "jshint": "^2.9.4",
     "redis": "^2.6.3",
     "socket.io": "^1.7.2"
   },
