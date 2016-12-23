@@ -4,18 +4,21 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "test": "cd lib && mocha"
+    "test": "cd lib && mocha",
+    "dev": "nodemon"
   },
   "dependencies": {
-    "aws-sdk": "^2.3.5",
+    "aws-sdk": "^2.7.19",
     "connect": "2.23.0",
-    "dotenv": "~0.4.0",
+    "dotenv": "^2.0.0",
     "express": "3.4.8",
-    "jade": "*",
-    "redis": "^0.12.1",
-    "socket.io": "^1.1.0"
+    "jade": "^1.11.0",
+    "redis": "^2.6.3",
+    "socket.io": "^1.7.2"
   },
   "devDependencies": {
+    "live-reload": "^1.1.0",
+    "nodemon": "^1.11.0",
     "mocha": "latest"
   }
 }
