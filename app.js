@@ -16,7 +16,7 @@ var port = process.env.PORT || 3000,
 app
     .set('port', port)
     .set('views', path.join(__dirname, 'views'))
-    .set('view engine', 'jade')
+    .set('view engine', 'pug')
     .use(express.logger('dev'))
     .use(express.json())
     .use(express.urlencoded())
