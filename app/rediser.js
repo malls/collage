@@ -14,21 +14,21 @@ if (process.env.MODE === 'development') {
     db = redis.createClient(redisURL.port, redisURL.hostname, {
         no_ready_check: true
     });
-    db.auth(redisURL.auth.split(":")[1]);
+    db.auth(redisURL.auth.split(':')[1]);
 }
 
 db.select(process.env.REDISDB || 0);
 
 //test db connection, output something in terminal
-db.set("rthdnajfondaopfda", "redis connected", function() {
-    db.get("rthdnajfondaopfda", function(err, response) {
+db.set('rthdnajfondaopfda', 'redis connected', function() {
+    db.get('rthdnajfondaopfda', function(err, response) {
         console.log(response);
     });
-    db.del("rthdnajfondaopfda");
+    db.del('rthdnajfondaopfda');
 });
 
-db.on("error", function(err) {
-    console.log("Redis Error: " + err);
+db.on('error', function(err) {
+    console.log('Redis Error: ' + err);
 });
 
 module.exports = db;
