@@ -41,13 +41,17 @@ app
     .get('/:room', room.load)
     .get('/robots.txt', function(req, res) {
         res.type('text/plain');
-        res.send("User-agent: *\nAllow: /");
+        res.send('User-agent: *\nAllow: /');
     })
 
 io.sockets.on('connection', function(socket) {
-    //rooms
+
+    socket.on('joinRoom', function(data) {
+        socket.join(data.room);
+    });
+
     socket.on('send', function(data) {
-        socket.broadcast.emit('move', data);
+        socket.broadcast.to(data.room).emit('move', data);
     });
 
     socket.on('savePosition', function(data) {
@@ -56,18 +60,14 @@ io.sockets.on('connection', function(socket) {
 
     socket.on('getId', function(data) {
         var imgid = garden.id('L');
-        socket.broadcast.emit('newimage', {
-            url: data.url,
-            id: imgid
-        });
-        socket.emit('newimage', {
+        io.sockets.in(data.room).emit('newimage', {
             url: data.url,
             id: imgid
         });
     });
 
     socket.on('bg', function(data) {
-        socket.broadcast.emit('set', {
+        socket.broadcast.to(data.room).emit('setBackground', {
             background: data.background
         });
         db.hset(data.room, 'background', data.background);
@@ -75,7 +75,7 @@ io.sockets.on('connection', function(socket) {
 
     socket.on('destroy', function(data) {
         db.hdel(data.room, data.id);
-        socket.broadcast.emit('remove', {
+        socket.broadcast.to(data.room).emit('remove', {
             id: data.id
         });
     });

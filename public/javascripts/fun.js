@@ -83,6 +83,7 @@
                 var position = e.currentTarget.style.cssText;
                 var id = e.currentTarget.id;
                 socket.emit('send', {
+                    room: room,
                     position: position,
                     id: id
                 });
@@ -90,6 +91,10 @@
     }
 
     everyImageNeedsThese('img');
+
+    socket.emit('joinRoom', {
+        room: room
+    });
 
     socket.on('move', function(data) {
         if (!document.getElementById(data.id)) {
@@ -110,8 +115,8 @@
         everyImageNeedsThese('#' + newImg.id);
     });
 
-    socket.on('set', function(data) {
-        document.style.background = data.background;
+    socket.on('setBackground', function(data) {
+        document.body.style.background = data.background;
     });
 
     socket.on('remove', function(data) {
@@ -134,6 +139,7 @@
         document.getElementById('bgInput').value = '';
         body().setBackground('white', bgValue, 'center center');
         var bgText = document.body.style.background;
+
         socket.emit('bg', {
             room: room,
             background: bgText
