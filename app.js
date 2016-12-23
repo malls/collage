@@ -39,6 +39,10 @@ app
     .get('/', index.show)
     .get('/sign', room.sign)
     .get('/:room', room.load)
+    .get('/robots.txt', function(req, res) {
+        res.type('text/plain');
+        res.send("User-agent: *\nAllow: /");
+    })
 
 io.sockets.on('connection', function(socket) {
     //rooms
