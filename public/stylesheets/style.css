@@ -29,7 +29,7 @@ img {
 }
 
 ul {
-  margin: 1px 1px 1px 1px;
+  margin: 2px 2px 2px 2px;
 }
 
 #zone{
@@ -44,12 +44,14 @@ ul {
   margin: auto;
   color: white;
   background-color: black;
-  height: 35px;
+  min-height: 30px;
   z-index: 999999999999999999999999999999999;
 }
 
 .baritem {
   display: inline-block;
+  margin-top: 5px;
+  /*padding-top: 10px;*/
   padding-right: 10px;
 }
 
