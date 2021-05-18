@@ -13,13 +13,13 @@
     "dotenv": "^2.0.0",
     "express": "^3.21.2",
     "pug": "^2.0.0-beta6",
-    "redis": "^2.6.3",
+    "redis": "^3.1.1",
     "socket.io": "^1.7.2"
   },
   "devDependencies": {
     "jshint": "^2.9.4",
     "live-reload": "^1.1.0",
-    "nodemon": "^1.11.0",
-    "mocha": "^3.2.0"
+    "mocha": "^3.2.0",
+    "nodemon": "^1.11.0"
   }
 }
