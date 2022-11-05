@@ -20,6 +20,6 @@
     "jshint": "^2.9.4",
     "live-reload": "^1.1.0",
     "mocha": "^10.1.0",
-    "nodemon": "^1.11.0"
+    "nodemon": "^2.0.20"
   }
 }
