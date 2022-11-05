@@ -2,6 +2,7 @@
   "name": "collage",
   "scripts": {
   },
+  "stack": "heroku-22",
   "env": {
     "AS3_ACCESS_KEY": {
       "required": true
