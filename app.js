@@ -1,8 +1,8 @@
 'use strict';
 
-const dotenv = require('dotenv').config();
+require('dotenv').config();
 
-var port = process.env.PORT || 3000,
+const port = process.env.PORT || 3000,
     db = require('./app/rediser'),
     garden = require('./lib/garden'),
     express = require('express'),
@@ -38,6 +38,7 @@ app
 app
     .get('/', index.show)
     .get('/sign', room.sign)
+    .get('/data', index.getRedisData)
     .get('/:room', room.load)
     .get('/robots.txt', function(req, res) {
         res.type('text/plain');
@@ -55,7 +56,7 @@ io.sockets.on('connection', function(socket) {
     });
 
     socket.on('savePosition', function(data) {
-        db.hset(data.room, data.id, JSON.stringify(data));
+        db.hSet(data.room, data.id, JSON.stringify(data));
     });
 
     socket.on('getId', function(data) {
@@ -70,14 +71,14 @@ io.sockets.on('connection', function(socket) {
         socket.broadcast.to(data.room).emit('setBackground', {
             background: data.background
         });
-        db.hset(data.room, 'background', data.background);
+        db.hSet(data.room, 'background', data.background);
     });
 
     socket.on('destroy', function(data) {
-        db.hdel(data.room, data.id);
         socket.broadcast.to(data.room).emit('remove', {
             id: data.id
         });
+        db.hDel(data.room, data.id);
     });
 
 });

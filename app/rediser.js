@@ -1,34 +1,34 @@
 'use strict';
 
-const dotenv = require('dotenv').config();
+require('dotenv').config();
 
-var url = require('url'),
-    redis = require('redis'),
-    db;
+const url = require('url');
+const { createClient } = require('redis');
+let client;
 
-//check if it's development, then use redis db if not
+//check if it's development, then use redis client if not
 if (process.env.MODE === 'development') {
-    db = redis.createClient(process.env.REDISPORT || 6379);
+    client = createClient();
 } else {
-    var redisURL = url.parse(process.env.REDISCLOUD_URL);
-    db = redis.createClient(redisURL.port, redisURL.hostname, {
+    const redisURL = url.parse(process.env.REDISCLOUD_URL);
+    client = createClient(redisURL.port, redisURL.hostname, {
         no_ready_check: true
     });
-    db.auth(redisURL.auth.split(':')[1]);
+    client.auth(redisURL.auth.split(':')[1]);
 }
 
-db.select(process.env.REDISDB || 0);
+client.on('error', (err) => console.log('Redis Client Error', err));
 
-//test db connection, output something in terminal
-db.set('rthdnajfondaopfda', 'redis connected', function() {
-    db.get('rthdnajfondaopfda', function(err, response) {
-        console.log(response);
-    });
-    db.del('rthdnajfondaopfda');
-});
+async function init() {
+    await client.connect();
+    await client.select(process.env.REDISDB || 0);
+    //test client connection, output something in terminal
+    await client.set('rthdnajfondaopfda', 'Redis connected.');
+    const confirmation = await client.get('rthdnajfondaopfda');
+    console.log(confirmation);
+    client.del('rthdnajfondaopfda');
+}
 
-db.on('error', function(err) {
-    console.log('Redis Error: ' + err);
-});
+init();
 
-module.exports = db;
+module.exports = client;
