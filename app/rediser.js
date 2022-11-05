@@ -11,10 +11,7 @@ if (process.env.MODE === 'development') {
     client = createClient();
 } else {
     const redisURL = url.parse(process.env.REDISCLOUD_URL);
-    client = createClient(redisURL.port, redisURL.hostname, {
-        no_ready_check: true
-    });
-    client.auth(redisURL.auth.split(':')[1]);
+    client = createClient({url: process.env.REDISCLOUD_URL});
 }
 
 client.on('error', (err) => console.log('Redis Client Error', err));
